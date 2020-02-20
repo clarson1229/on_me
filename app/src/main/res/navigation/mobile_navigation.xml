@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.connorlarson.onme.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_friends"
+        android:name="com.connorlarson.onme.ui.friends.FriendsFragment"
+        android:label="@string/menu_friends"
+        tools:layout="@layout/fragment_friends" />
+
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.connorlarson.onme.ui.favorites.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/nav_credits"
+        android:name="com.connorlarson.onme.ui.credits.CreditsFragment"
+        android:label="@string/menu_credits"
+        tools:layout="@layout/fragment_credits" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.connorlarson.onme.ui.history.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.connorlarson.onme.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+
+</navigation>
