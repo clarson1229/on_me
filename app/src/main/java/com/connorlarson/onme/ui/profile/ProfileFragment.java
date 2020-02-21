@@ -24,15 +24,31 @@ public class ProfileFragment extends Fragment {
                 ViewModelProviders.of(this).get(ProfileViewModal.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final TextView textView = root.findViewById(R.id.text_profile);
+        final TextView profileName = root.findViewById(R.id.text_profile_name);
+        final TextView profileEmail = root.findViewById(R.id.text_profile_email);
+
         ProfileViewModal.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+        ProfileViewModal.getProfileName().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                profileName.setText(s);
+            }
+        });
+        ProfileViewModal.getProfileEmail().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                profileEmail.setText(s);
+            }
+        });
+
         return root;
     }
 
-    public void openProfileFragment(View view) {
-    }
+//    Todo make data base calls to propigate the scroll views with data
+//    Todo set up the scrollviews so they can recieve data.
 }

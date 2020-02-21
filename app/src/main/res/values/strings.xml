@@ -14,6 +14,20 @@
     <string name="menu_history">History</string>
     <string name="more_settings">More Settings</string>
     <string name="menu_profile" >Profile</string>
+    <string name="avatar">avatar</string>
+    <string name="edit">edit</string>
+    <string name="favorite_bars">Favorite Bars</string>
+    <string name="add_bar">Add Bar</string>
+    <string name="add_drink">Add Drink</string>
+    <string name="favorite_drinks">Favorite Drinks</string>
+    <string name="friends_list">Friends List</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="add_5">Add $5</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="add_20">Add $20</string>
+    <string name="add_10">Add $10</string>
+    <string name="auto_add_funds">Auto Add Funds</string>
+    <string name="transaction_history">Transaction History</string>
 
 
 </resources>

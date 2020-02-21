@@ -60,7 +60,46 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void openProfileFragment(View view) {
+
+    public void addFriend(View view) {
+//        todo load popup activicty to allow user to search for friend.
+        // this will hit the database and will need async call
+    }
+
+    public void editProfileinfo(View view) {
+//        TOdo add pop activity to edit profile information
 
     }
+
+    public void addFavBar(View view) {
+        // Todo add pop up activity to allow user to add a fav bar
+    }
+
+
+    public void addFavDrink(View view) {
+        // todo add popup activity to allow user to add drink
+    }
+
+    public void addFavoriteBar(View view) {
+        // Todo add pop up activity to allow user to add a fav bar For favorites Tab
+    }
+
+    public void addFavoriteDrink(View view) {
+        // Todo add pop up activity to allow user to add a fav drink for Favorites Tab
+
+    }
+
+    public void add5ToAccount(View view) {
+//        todo add activity to allow user to add 5$ to account
+    }
+
+    public void add10ToAccount(View view) {
+        //        todo add activity to allow user to add 10$ to account
+    }
+
+    public void add20ToAccount(View view) {
+        //        todo add activity to allow user to add 20$ to account
+    }
+
+
 }
