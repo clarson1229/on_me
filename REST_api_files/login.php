@@ -1,21 +1,22 @@
 <?php
 
 $db = "on_me";
-$dbuser = "*****";
-$pass = "*****";
+$dbuser = "root";
+$pass = "gunni";
 $host = "localhost";
-$username = $_GET["user"];
-$password = $_GET["password"];
+$username = $_POST["user"];
+$password = $_POST["password"];
 
 $conn = mysqli_connect($host,$dbuser, $pass, $db);
 if ($conn){
-        $q = "SELECT * from Users_table Where id_User like '$username' and password_user like '$password'";
+        $q = "SELECT * from Users_table Where id_User like '$username' and password_user like '$passw$
         $result = mysqli_query($conn, $q);
         if (mysqli_num_rows($result) > 0){
-                $results = mysqli_fetch_array($result);
-                echo json_encode($results);
+                echo "Login Sucess \n";
+                $row = mysqli_fetch_assoc($result);
+                echo $row["id_User"];
          }else{
-                echo  $_GET["user"];
+                echo "UserName not found";
                 echo "Login failed!!!";
         }
 }else {

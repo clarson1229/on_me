@@ -2,12 +2,16 @@ package com.connorlarson.onme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.os.AsyncTask;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,11 +28,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 public class LoginPage extends AppCompatActivity {
     EditText username;
     EditText password;
     TextView results;
+    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +55,14 @@ public class LoginPage extends AppCompatActivity {
         ALT.execute(usernameString, passwordString);
 
 
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
+
     }
     private void processResults (String response){
         String returnedData=response;
 
         results.setText(returnedData.toString());
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
     private class attemptLoginTask extends AsyncTask<String, Void, String> {
 
@@ -66,83 +74,58 @@ public class LoginPage extends AppCompatActivity {
 
             String connstr = "http://connorlarson.ddns.net/restapi/login.php";
 
-
-
-
             try{
-                String data = URLEncoder.encode("user", "UTF-8")
-                        + "=" + URLEncoder.encode(user, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8")
-                        + "=" + URLEncoder.encode(password,"UTF-8");
+
                 URL url = new URL(connstr);
-                URLConnection conn2 = url.openConnection();
-                conn2.setDoOutput(true);
-                conn2.setDoInput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn2.getOutputStream());
-                wr.write(data);
-                wr.flush();
+                String param = "user="+user+"&password="+password;
+                Log.d(TAG, "param:" + param);
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
+                // Open a connection using HttpURLConnection
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-                // Read Server Response
-                while((line = reader.readLine()) != null)
-                {
-                    // Append server response in string
-                    sb.append(line + "\n");
+                con.setReadTimeout(7000);
+                con.setConnectTimeout(7000);
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                con.setInstanceFollowRedirects(false);
+                con.setRequestMethod("POST");
+                con.setFixedLengthStreamingMode(param.getBytes().length);
+                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                // Send
+                PrintWriter out = new PrintWriter(con.getOutputStream());
+                Log.d(TAG, "out Stream" + out);
+                out.print(param);
+                out.close();
+
+                con.connect();
+                BufferedReader in = null;
+                if (con.getResponseCode() != 200) {
+                    in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                    Log.d(TAG, "!=200: " + in);
+
+                } else {
+                    in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    Log.d(TAG, "POST request send successful: " + in);
+
+                    String line = null;
+
+                    StringBuilder sb = new StringBuilder();
+                    while((line = in.readLine()) != null)
+                    {
+                        // Append server response in string
+                        sb.append(line + "\n");
+                    }
+                    result = sb.toString();
                 }
-
-
-                result = sb.toString();
-
-            } catch (UnsupportedEncodingException ex) {
+            }catch (MalformedURLException ex) {
                 ex.printStackTrace();
-            } catch (MalformedURLException ex) {
-                ex.printStackTrace();
-            } catch (IOException ex) {
+            }catch (IOException ex) {
                 ex.printStackTrace();
             }
-//                URL url = new URL(connstr);
-//                HttpURLConnection http = (HttpURLConnection) url.openConnection();
-//                http.setRequestMethod("POST");
-//                http.setDoInput(true);
-//                http.setDoOutput(true);
-//                http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//
-//                OutputStream ops = http.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops,"UTF-8"));
-//                String data = URLEncoder.encode("user", "UTF-8")+"="+URLEncoder.encode(user,"UTF-8")
-//                        +"&"+URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
-//                writer.write(data);
-//                writer.flush();
-//                writer.close();
-//                ops.close();
-//
-//                http.connect();
-//
-//                InputStream ips = http.getInputStream();
-//                BufferedReader reader = new BufferedReader((new InputStreamReader(ips,"ISO-8859-1")));
-//                String line ="";
-//                while((line = reader.readLine()) != null){
-//                    result += line;
-//                }
-//                reader.close();
-//                ips.close();
-//                http.disconnect();
-
             return result;
-
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                result = e.getMessage();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                result = e.getMessage();
-//            }
-
-
         }
+
         @Override
         protected void onPostExecute(String Result){
             processResults(Result);
