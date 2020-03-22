@@ -2,11 +2,14 @@ package com.connorlarson.onme;
 
 import android.os.Bundle;
 
+import com.connorlarson.onme.SharedViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
+    private SharedViewModel sharedViewModel;
+
+    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        userId = getIntent().getStringExtra("USER_NAME");
+//        Todo Save this for later testing if needed.
+//        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        Log.d("Main on create", userId);
     }
+    // Gives fragments access to the data.
+    public String getUserID(){return userId; }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
 
     public void addFriend(View view) {
 //        todo load popup activicty to allow user to search for friend.

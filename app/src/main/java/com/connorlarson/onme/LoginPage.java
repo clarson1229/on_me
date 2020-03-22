@@ -10,32 +10,26 @@ import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
-import javax.net.ssl.HttpsURLConnection;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class LoginPage extends AppCompatActivity {
     EditText username;
     EditText password;
     TextView results;
-    private static final String TAG = "MyActivity";
+    private static final String TAG = "Login Pageee";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +47,32 @@ public class LoginPage extends AppCompatActivity {
         attemptLoginTask ALT = new attemptLoginTask();
 
         ALT.execute(usernameString, passwordString);
-
-
-
     }
     private void processResults (String response){
-        String returnedData=response;
 
-        results.setText(returnedData.toString());
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Log.d(TAG,  response);
+        try{
+            JSONObject reader = new JSONObject(response);
+            JSONObject response1  = reader.getJSONObject("response");
+            String userName = response1.getString("userName");
+            String status = response1.getString("status");
+            Log.d(TAG, userName);
+            if (status == "true"){
+                Toast.makeText(getApplicationContext(),"Login Success",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("USER_NAME", userName);
+
+                startActivity(intent);
+
+            }else{
+                Toast.makeText(getApplicationContext(),"UserName or Password incorrect",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        catch (JSONException e) {
+        e.printStackTrace();
+        }
+
     }
     private class attemptLoginTask extends AsyncTask<String, Void, String> {
 
@@ -109,14 +119,14 @@ public class LoginPage extends AppCompatActivity {
                     Log.d(TAG, "POST request send successful: " + in);
 
                     String line = null;
-
                     StringBuilder sb = new StringBuilder();
                     while((line = in.readLine()) != null)
                     {
                         // Append server response in string
-                        sb.append(line + "\n");
+                        sb.append(line);
                     }
                     result = sb.toString();
+                    return result;
                 }
             }catch (MalformedURLException ex) {
                 ex.printStackTrace();
