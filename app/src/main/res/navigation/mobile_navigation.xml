@@ -40,6 +40,5 @@
         android:name="com.connorlarson.onme.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
-
-
+    
 </navigation>
