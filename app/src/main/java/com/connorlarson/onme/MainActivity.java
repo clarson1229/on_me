@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedViewModel sharedViewModel;
 
-    String userId;
+    private String userId;
+    private Pair<Double, Double> latLong = Pair.create(39.028015127394035,-94.5739747663232);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Main on create", userId);
     }
     // Gives fragments access to the data.
-    public String getUserID(){return userId; }
+    public String getUserID(){ return userId; }
+    public Double getLat(){ return latLong.first; }
+    public Double getLong(){ return latLong.second; }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,4 +119,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void Load_points(View view) {
+        // Todo this button adds points to map.
+
+    }
 }

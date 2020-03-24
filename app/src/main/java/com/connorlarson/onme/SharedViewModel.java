@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 public class SharedViewModel extends ViewModel {
 
-//    private MutableLiveData<String> dataToShare ("Initial value!");
     private MutableLiveData<String> dataToShare;
 
     public SharedViewModel() {

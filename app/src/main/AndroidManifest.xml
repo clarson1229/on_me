@@ -3,6 +3,13 @@
     package="com.connorlarson.onme">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <permission android:name="com.connorlarson.onme.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
 
     <application
         android:allowBackup="true"
@@ -12,6 +19,15 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCKxHzUdDoLE66qwjb11DLQ0XOCo9SlutU" />
+
         <activity
             android:name=".LoginPage"
             android:label="@string/Login"

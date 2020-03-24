@@ -32,7 +32,7 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="Login">Login</string>
-
+    <string name="load_points">Load points</string>
 
 
 </resources>
