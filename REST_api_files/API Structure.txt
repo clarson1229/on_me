@@ -1,0 +1,42 @@
+Login.php 
+	user= 
+	&password=
+
+	returns 
+		$response->status = true;
+                $response->userName = $row["id_User"];
+                $myObj->response= $response;
+                
+fav_bars.php
+	user= 
+	
+	returns 
+		$favBarId= $row["id_fav_bar"];
+                 $barName= $row["fk_name_restaurant"];
+                 $barAddress= $row["fk_address_restaurant"];
+                 $restaurantId= $row["fk_id_restaurant"];
+                 $results['Fav bars: '][] = array('FavBarId' => $favBarId, 'BarName' => $barName, 'BarAddress' => $barAddress, 'RestaurantId' => $restaurantID);
+
+fav_drinks.php
+	user= 
+	
+	returns 
+		$drinkId= $row["id_drinks"];
+                $drinkName= $row["name_drink"];
+                $drinkDescription= $row["description_drink"];
+                $results['Fav Drinks: '][] = array('DrinkId' => $drinkId, 'DrinkName' => $drinkName, 'DrinkDescription' => $drinkDescription);
+
+restaurants.php
+	blank
+	
+	returns 
+		$restaurantId= $row["id_restaurant"];
+                $restaurantName= $row["name_restaurant"];
+                $restaurantAddress= $row["address_resturant"];
+                $restaurantPhone= $row["phone_restaurant"];
+                $restaurantHours= $row["hours_restaurant"];
+                $results['Resturants: '][] = array('RestaurantId' => $restaurantId, 'RestaurantName' => $restaurantName, 'restaurantAddress' => $restaurantAddress, 'RestaurantPhone' => $restaurantPhone, 'RestaurantHours' => restaurantHours);
+
+
+
+
