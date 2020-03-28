@@ -126,6 +126,7 @@ public class LoginPage extends AppCompatActivity {
                         sb.append(line);
                     }
                     result = sb.toString();
+                    con.disconnect();
                     return result;
                 }
             }catch (MalformedURLException ex) {
@@ -133,6 +134,7 @@ public class LoginPage extends AppCompatActivity {
             }catch (IOException ex) {
                 ex.printStackTrace();
             }
+
             return result;
         }
 
