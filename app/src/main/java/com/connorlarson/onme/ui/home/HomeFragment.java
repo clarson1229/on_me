@@ -1,39 +1,36 @@
 package com.connorlarson.onme.ui.home;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
 import com.connorlarson.onme.Restaurant;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,7 +60,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +76,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private View mView;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private String selectedPlace;
-
+    private Marker mMarker;
 
     private Map <String,Restaurant> restaurantMap =  new HashMap<String, Restaurant>();
 
@@ -89,6 +85,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private MainActivity activity;
     private HomeViewModel homeViewModel;
     private String userId;
+
+    // widgets
+    private EditText mSearchText;
+    private ImageView mGps;
+
+    private Button selectPlaceButton;
+    private TextView selectedPlaceTextView;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -100,6 +103,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mMap.getUiSettings().setZoomControlsEnabled(true);
             addRestaurantMarkers();
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Log.d(TAG,"onMarkerClicked: marker clicked");
+                    mMarker = marker;
+                    selectedPlace = mMarker.getSnippet();
+                    Log.d(TAG,"onMarkerClick: Title=" +
+                            mMarker.getTitle()+ " Snippit="+ mMarker.getSnippet() );
+                    selectedPlaceTextView.setText(mMarker.getTitle());
+                    return false;
+                }
+            });
+            init();
         }
 
     }
@@ -107,24 +123,54 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = mView.findViewById(R.id.text_home);
-// This is how to get data from shared modal.
-//        homeViewModel =
-//                ViewModelProviders.of(this).get(HomeViewModel.class);
-//        homeViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-        // sets the text view text
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
-        textView.setText(userId);
-        getLocationPermission();
+        selectedPlaceTextView =  mView.findViewById(R.id.selectedPlace);
+        mSearchText =  mView.findViewById(R.id.input_search);
+        mGps =  mView.findViewById(R.id.ic_gps);
+        selectPlaceButton = mView.findViewById(R.id.select_place_button);
 
+//        textView.setText(userId);
+        getLocationPermission();
         return mView;
     }
+
+    private void init(){
+        Log.d(TAG, "init: initializing");
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == keyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER
+                        || keyEvent.getAction() == keyEvent.KEYCODE_DPAD_CENTER){
+
+                    // Execute our method for searching
+                    String searchString = mSearchText.getText().toString();
+                    LatLng tempLatLong = getLocationFromAddress(activity, searchString);
+                    moveCamera(tempLatLong, DEFAULT_ZOOM);
+                }
+                return false;
+            }
+        });
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Center Location");
+                getDeviceLocation();
+            }
+        });
+        selectPlaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo popup modal to send the drink.
+                Log.d(TAG, "selectPlace button clicked");
+            }
+        });
+        hideSoftKeyboard();
+    }
+
     private void getDeviceLocation(){
         Log.d(TAG,"Getting Device location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
@@ -151,10 +197,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
+
     private void moveCamera(LatLng latLng, float zoom){
         Log.d(TAG, "Moving Camera to lat: " + latLng.latitude + ", Long: "+ latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+        hideSoftKeyboard();
     }
+
     private  void initMap(){
         Log.d(TAG, "Initializing map");
         if (mMap == null) {
@@ -162,9 +211,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mapFrag.getMapAsync(HomeFragment.this);
         }
     }
+
     private void getLocationPermission(){
         Log.d(TAG, "getting Permissions");
-
         Dexter.withActivity(activity).withPermission(FINE_LOCATION).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
@@ -189,13 +238,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         }).check();
     }
+
     private void addRestaurantMarkers() {
         getRestaurantPoints ALT = new getRestaurantPoints();
 
         ALT.execute();
     }
-    private class getRestaurantPoints extends AsyncTask<String, Void, String> {
 
+    private class getRestaurantPoints extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String result="";
@@ -250,7 +300,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
             return result;
         }
-
         @Override
         protected void onPostExecute(String result){
             Log.d(TAG, "onPostExecute: Result = "+ result);
@@ -258,12 +307,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             // itrerateing through the hashMap that has now been created
 
             //todo maybe add a variable on if results have been processed yet
+            //Todo custom markers on the map that display title of resturant by defualt.
             for (String s: restaurantMap.keySet()){
                 Log.d(TAG, "onPostExecute: resName= "+ restaurantMap.get(s).getResName());
                 mMap.addMarker(new MarkerOptions().position(restaurantMap.get(s).getResLatLong()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(restaurantMap.get(s).getResName()).snippet(s));
             }
         }
     }
+
     private void processResults (String response){
         try {
             JSONObject reader = new JSONObject(response);
@@ -280,9 +331,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                     Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,tempLatLong);
                     restaurantMap.put(tempId,restaurant);
-
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -294,7 +343,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
-
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
@@ -313,4 +361,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return p1;
     }
 
+    private void hideSoftKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager) mView
+                .getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        IBinder binder = mView.getWindowToken();
+        inputManager.hideSoftInputFromWindow(binder,
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }
