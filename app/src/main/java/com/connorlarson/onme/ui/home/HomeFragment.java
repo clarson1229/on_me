@@ -240,9 +240,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addRestaurantMarkers() {
-        getRestaurantPoints ALT = new getRestaurantPoints();
+        getRestaurantPoints GRP = new getRestaurantPoints();
 
-        ALT.execute();
+        GRP.execute();
     }
 
     private class getRestaurantPoints extends AsyncTask<String, Void, String> {
@@ -319,6 +319,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         try {
             JSONObject reader = new JSONObject(response);
             JSONArray restaurantsArray = reader.getJSONArray("Restaurants");
+            restaurantMap.clear();
             for (int i = 0; i< restaurantsArray.length(); i++){
                 JSONObject obj = restaurantsArray.getJSONObject(i);
                     String tempId = obj.getString("RestaurantId");
