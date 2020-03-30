@@ -37,6 +37,16 @@ restaurants.php
                 $restaurantHours= $row["hours_restaurant"];
                 $results['Resturants: '][] = array('RestaurantId' => $restaurantId, 'RestaurantName' => $restaurantName, 'restaurantAddress' => $restaurantAddress, 'RestaurantPhone' => $restaurantPhone, 'RestaurantHours' => restaurantHours);
 
+profile.php
+	user=
+	
+	returns 
+		$response->userName = $row["id_User"];
+                $response->firstName = $row["first_name_user"];
+                $response->lastName = $row["last_name_user"];
+                $response->address = $row["address_user"];
+                $response->email = $row["email_user"];
+                $myObj->userInfo= $response;
 
 
 
