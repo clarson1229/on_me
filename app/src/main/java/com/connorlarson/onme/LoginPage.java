@@ -92,7 +92,7 @@ public class LoginPage extends AppCompatActivity {
 
                 // Open a connection using HttpURLConnection
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
+                Log.d(TAG, "Opening conncetion");
                 con.setReadTimeout(7000);
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);
