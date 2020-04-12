@@ -1,0 +1,16 @@
+SELECT
+    T.id_transaction,
+    T.fk_recipient_restaurant,
+    R.name_restaurant,
+    T.amount_transaction,
+    T.message_transaction,
+    T.date_time_transaction,
+    T.fk_sender_users,
+    T.fk_id_recipient_user
+FROM
+    Transactions_table AS T
+INNER JOIN
+    Restaurants_table AS R
+ON
+    T.fk_recipient_restaurant = R.id_restaurant;
+

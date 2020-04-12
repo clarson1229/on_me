@@ -33,6 +33,14 @@
     <string name="username">Username</string>
     <string name="Login">Login</string>
     <string name="select_place">Select Place</string>
+    <string name="enter_message_to_send_to_with_drink">Enter Message to send to with Drink</string>
+    <string name="send">Send</string>
+    <string name="select_drink_recepiant">Select a Drink Recipient</string>
+    <string name="enter_drink_amount">Enter a Drink Amount</string>
+    <string name="back">Back</string>
+    <string name="enter_an_amount">Enter an Amount</string>
+    <string name="enter_a_message">Enter A Message</string>
+    <string name="send_a_drink">Send A Drink</string>
 
 
 </resources>

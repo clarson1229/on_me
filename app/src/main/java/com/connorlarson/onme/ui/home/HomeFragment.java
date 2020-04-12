@@ -2,6 +2,7 @@ package com.connorlarson.onme.ui.home;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -29,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
 import com.connorlarson.onme.Restaurant;
+import com.connorlarson.onme.SendDrinkPage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -84,7 +86,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     // data vars
     private MainActivity activity;
     private HomeViewModel homeViewModel;
-    private String userId;
+    private String userId, selectedPlaceId;
 
     // widgets
     private EditText mSearchText;
@@ -108,9 +110,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 public boolean onMarkerClick(Marker marker) {
                     Log.d(TAG,"onMarkerClicked: marker clicked");
                     mMarker = marker;
-                    selectedPlace = mMarker.getSnippet();
+                    selectedPlaceId = mMarker.getSnippet();
                     Log.d(TAG,"onMarkerClick: Title=" +
                             mMarker.getTitle()+ " Snippit="+ mMarker.getSnippet() );
+                    selectedPlace = mMarker.getTitle();
                     selectedPlaceTextView.setText(mMarker.getTitle());
                     return false;
                 }
@@ -165,7 +168,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 //todo popup modal to send the drink.
-                Log.d(TAG, "selectPlace button clicked");
+                Log.d(TAG, "selectPlace button clicked. Opening sendDrink Activity");
+                Intent intent = new Intent(activity, SendDrinkPage.class);
+                intent.putExtra("USER_NAME", userId);
+                intent.putExtra("RESTAURANT", selectedPlace);
+                intent.putExtra("RESTAURANT_ID", selectedPlaceId);
+                startActivity(intent);
+
             }
         });
         hideSoftKeyboard();
