@@ -1,7 +1,7 @@
 <?php
 $db = "on_me";
-$dbuser = "root";
-$pass = "gunni";
+$dbuser = "";
+$pass = "";
 $host = "localhost";
 
 $conn = mysqli_connect($host,$dbuser, $pass, $db);
@@ -15,7 +15,7 @@ if($conn){
                         $restaurantAddress= $row["address_resturant"];
                         $restaurantPhone= $row["phone_restaurant"];
                         $restaurantHours= $row["hours_restaurant"];
-                        $results['Resturants: '][] = array('RestaurantId' => $restaurantId, 'RestaurantName' => $restaurantName, 'restaurantAddress' => $restaurantAddress, 'RestaurantPhone' => $restaurantPhone, 'RestaurantHours' => restaurantHours);
+                        $results['Resturants: '][] = array('RestaurantId' => $restaurantId, 'RestaurantName' => $restaurantName, 'restaurantAddress' => $restaurantAddress, 'RestaurantPhone' => $restaurantPhone, 'RestaurantHours' => $restaurantHours);
                 }
                         echo json_encode($results);
         }else{

@@ -41,6 +41,8 @@
     <string name="enter_an_amount">Enter an Amount</string>
     <string name="enter_a_message">Enter A Message</string>
     <string name="send_a_drink">Send A Drink</string>
+    <string name="center_on_my_location">Center on my location</string>
+    <string name="enter_address_city_or_zip_code">Enter Address, City or Zip code</string>
 
 
 </resources>

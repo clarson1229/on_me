@@ -55,6 +55,6 @@
         app:layout_constraintHorizontal_bias="0.748"
         app:layout_constraintStart_toEndOf="@+id/friendsList_text"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="addFriend"/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
