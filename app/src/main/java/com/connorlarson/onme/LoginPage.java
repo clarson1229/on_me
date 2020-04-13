@@ -1,8 +1,6 @@
 package com.connorlarson.onme;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
-import com.google.android.material.tabs.TabLayout;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,6 +58,7 @@ public class LoginPage extends AppCompatActivity {
                 intent.putExtra("USER_NAME", userName);
 
                 startActivity(intent);
+                finish();
 
             }else{
                 Toast.makeText(getApplicationContext(),"UserName or Password incorrect",Toast.LENGTH_SHORT).show();
@@ -92,7 +88,7 @@ public class LoginPage extends AppCompatActivity {
 
                 // Open a connection using HttpURLConnection
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
+                Log.d(TAG, "Opening conncetion");
                 con.setReadTimeout(7000);
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);
