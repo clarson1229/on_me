@@ -249,104 +249,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addRestaurantMarkers() {
-        getRestaurantPoints GRP = new getRestaurantPoints();
-
-        GRP.execute();
-    }
-
-    private class getRestaurantPoints extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String result="";
-
-            String connstr = "http://connorlarson.ddns.net/restapi/restaurants.php";
-
-            try{
-                URL url = new URL(connstr);
-
-                // Open a connection using HttpURLConnection
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-                con.setReadTimeout(7000);
-                con.setConnectTimeout(7000);
-                con.setDoOutput(true);
-                con.setDoInput(true);
-                con.setInstanceFollowRedirects(false);
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-                // Send
-                PrintWriter out = new PrintWriter(con.getOutputStream());
-                Log.d(TAG, "out Stream" + out);
-
-                out.close();
-
-                con.connect();
-                BufferedReader in = null;
-                if (con.getResponseCode() != 200) {
-                    in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-                    Log.d(TAG, "!=200: " + in);
-
-                } else {
-                    in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    Log.d(TAG, "POST request send successful: " + in);
-
-                    String line = null;
-                    StringBuilder sb = new StringBuilder();
-                    while((line = in.readLine()) != null)
-                    {
-                        // Append server response in string
-                        sb.append(line);
-                    }
-                    result = sb.toString();
-                    con.disconnect();
-                    return result;
-                }
-            }catch (MalformedURLException ex) {
-                ex.printStackTrace();
-            }catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            return result;
-        }
-        @Override
-        protected void onPostExecute(String result){
-            Log.d(TAG, "onPostExecute: Result = "+ result);
-            processResults(result);
-            // itrerateing through the hashMap that has now been created
-
-            //todo maybe add a variable on if results have been processed yet
-            //Todo custom markers on the map that display title of resturant by defualt.
-            for (String s: restaurantMap.keySet()){
-                Log.d(TAG, "onPostExecute: resName= "+ restaurantMap.get(s).getResName());
-                mMap.addMarker(new MarkerOptions().position(restaurantMap.get(s).getResLatLong()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(restaurantMap.get(s).getResName()).snippet(s));
-            }
+        restaurantMap=activity.getRestaurantMap();
+        //todo maybe add a variable on if results have been processed yet
+        //Todo custom markers on the map that display title of resturant by defualt.
+        for (String s: restaurantMap.keySet()){
+            Log.d(TAG, "onPostExecute: resName= "+ restaurantMap.get(s).getResName());
+            mMap.addMarker(new MarkerOptions().position(restaurantMap.get(s).getResLatLong()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(restaurantMap.get(s).getResName()).snippet(s));
         }
     }
 
-    private void processResults (String response){
-        try {
-            JSONObject reader = new JSONObject(response);
-            JSONArray restaurantsArray = reader.getJSONArray("Restaurants");
-            restaurantMap.clear();
-            for (int i = 0; i< restaurantsArray.length(); i++){
-                JSONObject obj = restaurantsArray.getJSONObject(i);
-                    String tempId = obj.getString("RestaurantId");
-                    String tempName = obj.getString("RestaurantName");
-                    String tempAddress = obj.getString("RestaurantAddress");
-                    String tempPhone = obj.getString("RestaurantPhone");
-                    String tempHours = obj.getString("RestaurantHours");
-                    Log.d(TAG, "processResults: id="+ tempId +" name=" + tempName + " address=" + tempAddress +" Phone=" +tempPhone + " hours=" + tempHours);
-                    LatLng tempLatLong = getLocationFromAddress(activity, tempAddress);
 
-                    Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,tempLatLong);
-                    restaurantMap.put(tempId,restaurant);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-    }
 
     public LatLng getLocationFromAddress(Context context,String strAddress) {
         Log.d(TAG, "getLocationFromAddress: converting str: "+ strAddress);
