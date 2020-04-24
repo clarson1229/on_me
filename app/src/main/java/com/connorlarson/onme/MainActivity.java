@@ -184,15 +184,8 @@ public class MainActivity extends AppCompatActivity {
                 String tempHours = obj.getString("RestaurantHours");
                 Log.d(TAG, "processResults: id="+ tempId +" name=" + tempName + " address=" + tempAddress +" Phone=" +tempPhone + " hours=" + tempHours);
                 LatLng tempLatLong = getLocationFromAddress(getApplicationContext(), tempAddress);
-                Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,tempLatLong);
-//                Restaurant restaurant = new Restaurant();
-//                restaurant.setResId(tempId);
-//                restaurant.setResName(tempName);
-//                restaurant.setResAddress(tempAddress);
-//                restaurant.setResHours(tempHours);
-//                restaurant.setResPhone(tempPhone);
-//                restaurant.setResLatLong(tempLatLong);
 
+                Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,tempLatLong);
                 restaurantMap.put(tempId,restaurant);
                 Log.d("processResults: ", restaurantMap.toString());
             }

@@ -43,11 +43,6 @@
     <string name="send_a_drink">Send A Drink</string>
     <string name="center_on_my_location">Center on my location</string>
     <string name="enter_address_city_or_zip_code">Enter Address, City or Zip code</string>
-    <string name="enter_restaurant_to_add">Enter Restaurant to add</string>
-    <string name="search_for_restaurant_to_add">Search For Restaurant to add</string>
-    <string name="enter_drink_description">Enter Drink Description</string>
-    <string name="enter_drink_name">Enter Drink Name</string>
-    <string name="button">Button</string>
-    <string name="icon_for_restaurant">Icon for Restaurant</string>
+
 
 </resources>
