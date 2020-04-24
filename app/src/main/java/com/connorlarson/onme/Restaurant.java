@@ -1,70 +1,81 @@
 package com.connorlarson.onme;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 
-public class Restaurant {
-    private String resName;
-    private String resAddress;
-    private String resId;
-    private String resPhone;
-    private String resHours;
-    private LatLng resLatLong;
+import java.io.Serializable;
+
+public class Restaurant implements Serializable {
+    private static String resName;
+    private static String resAddress;
+    private static String resId;
+    private static String resPhone;
+    private static String resHours;
+    private static LatLng resLatLong;
 
     public Restaurant(String resName,String resAddress, String resId, String resPhone, String resHours, LatLng resLatLong ){
-        this.resName = resName;
-        this.resAddress = resAddress;
-        this.resId = resId;
-        this.resPhone = resPhone;
-        this.resHours = resHours;
-        this.resLatLong = resLatLong;
+        Restaurant.resName = resName;
+        Restaurant.resAddress = resAddress;
+        Restaurant.resId = resId;
+        Restaurant.resPhone = resPhone;
+        Restaurant.resHours = resHours;
+        Restaurant.resLatLong = resLatLong;
     }
 
-
-    public LatLng getResLatLong() {
-        return resLatLong;
-    }
-
-    public void setResLatLong(LatLng resLatLong) {
-        this.resLatLong = resLatLong;
-    }
-
-    public String getResName() {
+    public static String getResName() {
         return resName;
     }
 
-    public void setResName(String resName) {
-        this.resName = resName;
+    public static void setResName(String resName) {
+        Restaurant.resName = resName;
     }
 
-    public String getResAddress() {
+    public static String getResAddress() {
         return resAddress;
     }
 
-    public void setResAddress(String resAddress) {
-        this.resAddress = resAddress;
+    public static void setResAddress(String resAddress) {
+        Restaurant.resAddress = resAddress;
     }
 
-    public String getResId() {
+    public static String getResId() {
         return resId;
     }
 
-    public void setResId(String resId) {
-        this.resId = resId;
+    public static void setResId(String resId) {
+        Restaurant.resId = resId;
     }
 
-    public String getResPhone() {
+    public static String getResPhone() {
         return resPhone;
     }
 
-    public void setResPhone(String resPhone) {
-        this.resPhone = resPhone;
+    public static void setResPhone(String resPhone) {
+        Restaurant.resPhone = resPhone;
     }
 
-    public String getResHours() {
+    public static String getResHours() {
         return resHours;
     }
 
-    public void setResHours(String resHours) {
-        this.resHours = resHours;
+    public static void setResHours(String resHours) {
+        Restaurant.resHours = resHours;
     }
+
+    public static LatLng getResLatLong() {
+        return resLatLong;
+    }
+
+    public static void setResLatLong(LatLng resLatLong) {
+        Restaurant.resLatLong = resLatLong;
+    }
+    @NonNull
+    @Override
+    public String toString() {
+        return "Restaurant [resName=" + resName + ", resAddress=" + resAddress
+                + "resId=" + resId + "resPhone=" + resPhone + "resHours=" + resHours +
+                "resLatLong=" + resLatLong + "]";
+    }
+
 }

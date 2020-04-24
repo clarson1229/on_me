@@ -1,11 +1,13 @@
 package com.connorlarson.onme.ui.favorites;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,10 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.connorlarson.onme.AddFavBar;
 import com.connorlarson.onme.FavBarAdapter;
 import com.connorlarson.onme.FavDrinkAdapter;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
+import com.connorlarson.onme.Restaurant;
 import com.connorlarson.onme.ui.profile.FavBar;
 import com.connorlarson.onme.ui.profile.FavDrink;
 
@@ -30,13 +34,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FavoritesFragment extends Fragment {
-
+    private Button addBarButton;
+    private Map<String, Restaurant> restaurantMap =  new HashMap<>();
     private static final String TAG = "Favorites Page";
     private View mView;
     private ListView favBarsListView;
@@ -52,12 +60,26 @@ public class FavoritesFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_favorites, container, false);
         favBarsListView = mView.findViewById(R.id.favorite_bar_ListView);
         favDrinksListView = mView.findViewById(R.id.favorite_drink_ListView);
+        addBarButton = mView.findViewById(R.id.add_favorite_bar_button);
 
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
-        updateScrollViews();
 
+        init();
         return mView;
+    }
+    private void init(){
+        updateScrollViews();
+        restaurantMap = activity.getRestaurantMap();
+        addBarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFavBar.class);
+                i.putExtra("USER_NAME", userId);
+                i.putExtra("HASP_MAP", (Serializable) restaurantMap);
+                startActivity(i);
+            }
+        });
     }
     private void updateScrollViews() {
         FavoritesFragment.getFavBars GFB = new getFavBars();
