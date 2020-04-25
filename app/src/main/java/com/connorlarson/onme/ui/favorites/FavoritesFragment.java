@@ -9,15 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
 
 import com.connorlarson.onme.AddFavBar;
+import com.connorlarson.onme.AddFavDrink;
 import com.connorlarson.onme.FavBarAdapter;
 import com.connorlarson.onme.FavDrinkAdapter;
 import com.connorlarson.onme.MainActivity;
@@ -35,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,16 +91,16 @@ public class FavoritesFragment extends Fragment {
                 startActivity(i);
             }
         });
-//        addDrinkButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(activity, AddFavDrink.class);
-//                i.putExtra("USER_NAME", userId);
-//                startActivity(i);
-//
-//
-//            }
-//        });
+        addDrinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFavDrink.class);
+                i.putExtra("USER_NAME", userId);
+                startActivity(i);
+
+
+            }
+        });
     }
     private void updateScrollViews() {
         FavoritesFragment.getFavBars GFB = new getFavBars();

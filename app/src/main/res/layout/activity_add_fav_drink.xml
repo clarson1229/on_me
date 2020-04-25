@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddFavDrink"
+    android:background="@drawable/pop_gradient"
+    android:layout_centerHorizontal="true">
+
+    <EditText
+        android:id="@+id/enterDrinkNameEditText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/enterDrinkNameTitleText"/>
+
+    <EditText
+        android:id="@+id/enterDrinkDescrEditText"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/EnterDrinkDescriptionTitle"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/EnterDrinkDescriptionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_drink_description"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/enterDrinkNameEditText"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/enterDrinkNameTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_drink_name"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_drink"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/enterDrinkDescrEditText"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>

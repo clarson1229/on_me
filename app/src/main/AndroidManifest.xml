@@ -21,7 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddFavBar" android:theme="@style/AppTheme.Popup"></activity>
+        <activity
+            android:name=".AddFavDrink"
+            android:theme="@style/AppTheme.Popup"/>
+        <activity
+            android:name=".AddFavBar"
+            android:theme="@style/AppTheme.Popup" />
         <activity android:name=".SendDrinkPage" />
 
         <meta-data
