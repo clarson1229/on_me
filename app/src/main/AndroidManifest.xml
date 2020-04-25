@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SendDrinkPage"></activity>
+        <activity android:name=".AddFavBar" android:theme="@style/AppTheme.Popup"></activity>
+        <activity android:name=".SendDrinkPage" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -43,7 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

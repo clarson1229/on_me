@@ -253,6 +253,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         //todo maybe add a variable on if results have been processed yet
         //Todo custom markers on the map that display title of resturant by defualt.
         for (String s: restaurantMap.keySet()){
+            LatLng tempLatLong = getLocationFromAddress(activity, restaurantMap.get(s).getResAddress());
+            restaurantMap.get(s).setResLatLong(tempLatLong);
             Log.d(TAG, "onPostExecute: resName= "+ restaurantMap.get(s).getResName());
             mMap.addMarker(new MarkerOptions().position(restaurantMap.get(s).getResLatLong()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(restaurantMap.get(s).getResName()).snippet(s));
         }

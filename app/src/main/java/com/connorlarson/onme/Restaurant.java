@@ -1,5 +1,7 @@
 package com.connorlarson.onme;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class Restaurant {
@@ -66,5 +68,12 @@ public class Restaurant {
 
     public void setResHours(String resHours) {
         this.resHours = resHours;
+    }
+    @NonNull
+    @Override
+    public String toString() {
+        return "Restaurant [resName=" + resName + ", resAddress=" + resAddress
+                + "resId=" + resId + "resPhone=" + resPhone + "resHours=" + resHours +
+                "resLatLong=" + resLatLong + "]";
     }
 }

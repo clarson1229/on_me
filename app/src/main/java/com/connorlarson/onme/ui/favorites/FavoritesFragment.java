@@ -1,11 +1,13 @@
 package com.connorlarson.onme.ui.favorites;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,12 +17,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.connorlarson.onme.AddFavBar;
 import com.connorlarson.onme.FavBarAdapter;
 import com.connorlarson.onme.FavDrinkAdapter;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
+import com.connorlarson.onme.Restaurant;
 import com.connorlarson.onme.ui.profile.FavBar;
 import com.connorlarson.onme.ui.profile.FavDrink;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,10 +35,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FavoritesFragment extends Fragment {
 
@@ -46,18 +54,56 @@ public class FavoritesFragment extends Fragment {
     private String userId;
     private ArrayList<FavBar> favBarArray =  new ArrayList<FavBar>();
     private ArrayList<FavDrink> favDrinkArray =  new ArrayList<FavDrink>();
-
+    private Button addBarButton;
+    private Button addDrinkButton;
+    private Map<String, Restaurant> restaurantMap =  new HashMap<>();
+    private ArrayList<Restaurant> restaurantArray = new ArrayList<>();
+    private String restaurantJString;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_favorites, container, false);
         favBarsListView = mView.findViewById(R.id.favorite_bar_ListView);
         favDrinksListView = mView.findViewById(R.id.favorite_drink_ListView);
 
+
+        addBarButton = mView.findViewById(R.id.add_favorite_bar_button);
+        addDrinkButton = mView.findViewById(R.id.add_favorite_drink_button);
+
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
-        updateScrollViews();
-
+        init();
         return mView;
+    }
+    private void init() {
+        updateScrollViews();
+        restaurantMap = activity.getRestaurantMap();
+        // todo fix this below
+        for (String s: restaurantMap.keySet()){
+            Log.d(TAG,"init: "+  restaurantMap.get(s).toString());
+            restaurantArray.add(restaurantMap.get(s));
+        }
+        restaurantJString = new Gson().toJson(restaurantArray);
+        Log.d(TAG,"init:  converting array to json"+ restaurantJString);
+
+        addBarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFavBar.class);
+                i.putExtra("USER_NAME", userId);
+                i.putExtra("ARRAY_STRING",  restaurantJString);
+                startActivity(i);
+            }
+        });
+//        addDrinkButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(activity, AddFavDrink.class);
+//                i.putExtra("USER_NAME", userId);
+//                startActivity(i);
+//
+//
+//            }
+//        });
     }
     private void updateScrollViews() {
         FavoritesFragment.getFavBars GFB = new getFavBars();

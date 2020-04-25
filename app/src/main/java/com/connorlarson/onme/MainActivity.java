@@ -1,5 +1,7 @@
 package com.connorlarson.onme;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.connorlarson.onme.SharedViewModel;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,6 +22,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -48,6 +58,9 @@ import android.view.Menu;
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private static final String TAG = "MainActivity";
+    private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+
     private Map<String,Restaurant> restaurantMap =  new HashMap<>();
     public Map<String, Restaurant> getRestaurantMap() {
         return restaurantMap;
@@ -183,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 String tempPhone = obj.getString("RestaurantPhone");
                 String tempHours = obj.getString("RestaurantHours");
                 Log.d(TAG, "processResults: id="+ tempId +" name=" + tempName + " address=" + tempAddress +" Phone=" +tempPhone + " hours=" + tempHours);
-                LatLng tempLatLong = getLocationFromAddress(getApplicationContext(), tempAddress);
+//                LatLng tempLatLong = getLocationFromAddress(getApplicationContext(), tempAddress);
 
-                Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,tempLatLong);
+                Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,null);
                 restaurantMap.put(tempId,restaurant);
                 Log.d("processResults: ", restaurantMap.toString());
             }
@@ -194,28 +207,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public LatLng getLocationFromAddress(Context context, String strAddress) {
-        Log.d(TAG, "getLocationFromAddress: converting str: "+ strAddress);
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
 
-            Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-        Log.d(TAG, "getLocationFromAddress: latLong point= "+ p1);
-        return p1;
-    }
 
 
 
