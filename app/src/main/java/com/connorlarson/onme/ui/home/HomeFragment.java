@@ -63,6 +63,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -265,7 +266,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     public LatLng getLocationFromAddress(Context context,String strAddress) {
         Log.d(TAG, "getLocationFromAddress: converting str: "+ strAddress);
-        Geocoder coder = new Geocoder(context);
+        Geocoder coder = new Geocoder(context, Locale.getDefault());
         List<Address> address;
         LatLng p1 = null;
         try {

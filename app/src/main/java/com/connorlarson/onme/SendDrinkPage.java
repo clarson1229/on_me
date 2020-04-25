@@ -82,6 +82,7 @@ public class SendDrinkPage extends AppCompatActivity {
                         selectedUserID+" recipientRestaurant= "+
                         selectedRestaurant+" recipientRestaurantID= "+
                         selectedRestaurantId);
+                hideKeyboard();
                 SendDrinkPage.createTransaction CT = new createTransaction();
                 CT.execute(userId,selectedUserID,dAmountEditString,dMessageEditString,selectedRestaurantId);
             }
@@ -89,6 +90,7 @@ public class SendDrinkPage extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard();
                 finish();
             }
         });
@@ -256,15 +258,13 @@ public class SendDrinkPage extends AppCompatActivity {
         }
     }
     //todo write a new hide keyboard method that works in activites
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            Log.d(TAG, "Keyboard now open ");
         }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

@@ -12,15 +12,15 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/enterDrinkNameTitleText"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"        android:layout_below="@+id/enterDrinkNameTitleText"/>
 
     <EditText
         android:id="@+id/enterDrinkDescrEditText"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/EnterDrinkDescriptionTitle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"        android:layout_below="@+id/EnterDrinkDescriptionTitle"
         android:layout_marginTop="10dp"/>
 
     <TextView
@@ -29,9 +29,9 @@
         android:layout_height="wrap_content"
         android:text="@string/enter_drink_description"
         android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/enterDrinkNameEditText"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"        android:layout_below="@+id/enterDrinkNameEditText"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/enterDrinkNameTitleText"
@@ -39,16 +39,18 @@
         android:layout_height="wrap_content"
         android:text="@string/enter_drink_name"
         android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="15dp"
+        />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_drink"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/enterDrinkDescrEditText"
-        android:layout_marginTop="10dp" />
+        android:layout_toRightOf="@+id/enterDrinkNameTitleText"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"/>
 
 </RelativeLayout>

@@ -11,15 +11,15 @@
     <RelativeLayout
         android:layout_marginTop="5dp"
         android:id="@+id/relativeLayoutSearchBarRestaurant"
-        android:layout_width="274dp"
-        android:layout_height="57dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:background="@drawable/white_border"
+        android:layout_centerHorizontal="true"
         >
 
         <EditText
             android:id="@+id/input_search_favbar_modal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="@string/enter_restaurant_to_add"
@@ -36,6 +36,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_magnify" />
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/add_bar_modal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_bar"
+            android:layout_toRightOf="@+id/input_search_favbar_modal"
+            />
 
 
     </RelativeLayout>
@@ -55,23 +64,7 @@
             />
 
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/add_bar_modal_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/recycleRelative"
-    >
-        <Button
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/add_bar_modal_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_bar"
-            />
 
-    </RelativeLayout>
 
 
 
