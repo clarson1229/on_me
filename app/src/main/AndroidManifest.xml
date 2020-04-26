@@ -22,8 +22,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddFriend"
+            android:theme="@style/AppTheme.Popup" />
+        <activity
             android:name=".AddFavDrink"
-            android:theme="@style/AppTheme.Popup"/>
+            android:theme="@style/AppTheme.Popup" />
         <activity
             android:name=".AddFavBar"
             android:theme="@style/AppTheme.Popup" />

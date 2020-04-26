@@ -1,11 +1,13 @@
 package com.connorlarson.onme.ui.friends;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,9 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.connorlarson.onme.AddFriend;
 import com.connorlarson.onme.FriendAdapter;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
+import com.connorlarson.onme.User;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +46,12 @@ public class FriendsFragment extends Fragment {
     // data vars
     private MainActivity activity;
     private String userId;
-    private ArrayList<String> friendsArray =  new ArrayList<String>();
+    private String userJString;
+    private ArrayList<String> friendsArray =  new ArrayList<>();
+    private ArrayList<User> userArrayList= new ArrayList<>();
+    private Button addFriendButton;
+    private static final int MODAL_REQUEST_CODE = 0;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         friendsViewModel =
@@ -58,8 +68,32 @@ public class FriendsFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
+        userArrayList = activity.getUserArrayList();
         updateScrollViews();
+
+
+        // todo fix this onclick
+        addFriendButton = mView.findViewById(R.id.add_friend_button);
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFriend.class);
+                i.putExtra("USER_NAME", userId);
+                i.putExtra("ARRAY_STRING",  userJString);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+            }
+        });
         return mView;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        if (requestCode == MODAL_REQUEST_CODE) {
+            if (resultCode == activity.RESULT_OK) {
+                updateScrollViews();
+            }
+        }
     }
     private void updateScrollViews() {
         FriendsFragment.getFriends GFB = new getFriends();
@@ -86,7 +120,7 @@ public class FriendsFragment extends Fragment {
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);
                 con.setDoInput(true);
-                con.setInstanceFollowRedirects(false);
+//                con.setInstanceFollowRedirects(false);
                 con.setRequestMethod("POST");
                 con.setFixedLengthStreamingMode(param.getBytes().length);
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -128,27 +162,59 @@ public class FriendsFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             Log.d(TAG, "onPostExecute: Result = "+ result);
-            try {
-                JSONObject reader = new JSONObject(result);
-                JSONArray friendArray = reader.getJSONArray("Friends");
-                friendsArray.clear();
-                for (int i = 0; i< friendArray.length(); i++){
-                    JSONObject obj = friendArray.getJSONObject(i);
-                    String tempFriend = obj.getString("Friend");
+            String temp = "No Friends found";
+            Log.d(TAG, "value =" + !result.equals(temp));
 
-                    Log.d(TAG, "onPostExecute: friend="+ tempFriend);
+            if (!result.equals("No Friends found")){
+                try {
+                    JSONObject reader = new JSONObject(result);
+                    JSONArray friendArray = reader.getJSONArray("Friends");
+                    friendsArray.clear();
+                    for (int i = 0; i< friendArray.length(); i++){
+                        JSONObject obj = friendArray.getJSONObject(i);
+                        String tempFriend = obj.getString("Friend");
 
-                    friendsArray.add(tempFriend);
+                        Log.d(TAG, "onPostExecute: friend="+ tempFriend);
+
+                        friendsArray.add(tempFriend);
+                    }
+                    // filtering user array done here.
+                    ArrayList<User> tempUserList = new ArrayList<>();
+                    // this removes users who are already your friend when searching in modal
+                    if (friendsArray.size() > 0 && userArrayList.size() > 0){
+                        Log.d(TAG, "Filtering friends");
+                        Log.d(TAG, "Friends added="+ friendsArray.toString());
+                        Log.d(TAG, "Users Array="+ userArrayList.toString());
+                        for (User user : userArrayList){
+                            Boolean addedAlreadyFlag = false;
+                            for (String friend : friendsArray){
+                                Log.d(TAG, "user = " + user.getUserId() + " friend=" + friend);
+                                Log.d(TAG, "value = " + !user.getUserId().equals(friend));
+                                if (user.getUserId().equals(friend)){
+                                    addedAlreadyFlag = true;
+                                }
+                            }
+                            if (!addedAlreadyFlag){
+                                tempUserList.add(user);
+                            }
+                        }
+                        userArrayList.clear();
+                        userArrayList.addAll(tempUserList);
+                    }
+
+                    Log.d(TAG, "onPostExecute: setting adapter");
+                    FriendAdapter favBarAdapter = new FriendAdapter(activity, friendsArray);
+                    friendsListView.setAdapter(favBarAdapter);
+                    userJString = new Gson().toJson(userArrayList);
+                    Log.d(TAG,"init:  converting array to json"+ userJString);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                Log.d(TAG, "onPostExecute: setting adapter");
-                FriendAdapter favBarAdapter = new FriendAdapter(activity, friendsArray);
-                friendsListView.setAdapter(favBarAdapter);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }else {
+                userJString = new Gson().toJson(userArrayList);
+                Log.d(TAG,"init:  converting array to json"+ userJString);
             }
-
         }
     }
 }

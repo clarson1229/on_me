@@ -1,6 +1,6 @@
 <?php
 $db = "on_me";
-$dbuser = "";
+$dubber = "";
 $pass = "";
 $host = "localhost";
 

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-
-public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRecyclerAdapter.RestaurantRecyclerAdapterViewHolder> implements Filterable {
-    private ArrayList<Restaurant> restaurantArray;
-    private ArrayList<Restaurant> restaurantArrayFull;
-    private ArrayList<Restaurant> filteredList = new ArrayList<>();
+public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendRecyclerAdapter.FriendRecyclerAdapterViewHolder> implements Filterable {
+    private ArrayList<User> userArray;
+    private ArrayList<User> userArrayFull;
+    private ArrayList<User> filteredList = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
-    private static final String TAG = "RRecyclerAdapter";
+    private static final String TAG = "FRecyclerAdapter";
+
 
     @Override
     public Filter getFilter() {
@@ -32,12 +31,14 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             filteredList.clear();
             Log.d(TAG, "performFiltering: filter=" + constraint);
             if (constraint == null || constraint.length() == 0){
-                filteredList.addAll(restaurantArrayFull);
+                filteredList.addAll(userArrayFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Restaurant restaurant : restaurantArrayFull){
-                    if (restaurant.getResName().toLowerCase().contains(filterPattern)){
-                        filteredList.add(restaurant);
+                for (User user : userArrayFull){
+                    // todo this is where the filtering will need to change
+                    String fullName = user.getFirstName() + " "+ user.getLastName();
+                    if (fullName.toLowerCase().contains(filterPattern)){
+                        filteredList.add(user);
                     }
                 }
             }
@@ -51,26 +52,24 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             Log.d(TAG, "publishResults: result = " + results.values.toString());
-            restaurantArray.clear();
-            restaurantArray.addAll((ArrayList) results.values);
+            userArray.clear();
+            userArray.addAll((ArrayList) results.values);
             notifyDataSetChanged();
         }
     };
-
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
     public void setOnItemClickListener(OnItemClickListener listener){
         mOnItemClickListener = listener;
     }
-    public static class RestaurantRecyclerAdapterViewHolder extends RecyclerView.ViewHolder{
-        public TextView resName;
-        public TextView resAddress;
-
-        public RestaurantRecyclerAdapterViewHolder (View itemView, final OnItemClickListener listener){
+    public static class FriendRecyclerAdapterViewHolder extends RecyclerView.ViewHolder{
+        public TextView firstName;
+        public TextView lastName;
+        public FriendRecyclerAdapterViewHolder (View itemView, final OnItemClickListener listener){
             super(itemView);
-            resName= itemView.findViewById(R.id.resNameCardTextView);
-            resAddress = itemView.findViewById(R.id.resaddressCardTextView);
+            firstName = itemView.findViewById(R.id.firstNameCardTextView);
+            lastName = itemView.findViewById(R.id.lastNameCardTextView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,30 +84,28 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
         }
     }
 
-    public RestaurantRecyclerAdapter (ArrayList<Restaurant> rArray){
-        restaurantArray = rArray;
-        restaurantArrayFull = new ArrayList<Restaurant>(rArray);
-        Log.d("recycleConstructor:", restaurantArray.toString());
+    public FriendRecyclerAdapter (ArrayList<User> rArray){
+        userArray = rArray;
+        userArrayFull = new ArrayList<User>(rArray);
+        Log.d("recycleConstructor:", userArray.toString());
     }
-
     @NonNull
     @Override
-    public RestaurantRecyclerAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_item, parent, false);
-        RestaurantRecyclerAdapterViewHolder RRAVH = new RestaurantRecyclerAdapterViewHolder(v,mOnItemClickListener);
-        return RRAVH;
+    public FriendRecyclerAdapter.FriendRecyclerAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item, parent, false);
+        FriendRecyclerAdapterViewHolder FRAVH = new FriendRecyclerAdapterViewHolder(v,mOnItemClickListener);
+        return FRAVH;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantRecyclerAdapterViewHolder holder, int position) {
-        Restaurant currentItem = restaurantArray.get(position);
-        holder.resName.setText(currentItem.getResName());
-        holder.resAddress.setText(currentItem.getResAddress());
+    public void onBindViewHolder(@NonNull FriendRecyclerAdapter.FriendRecyclerAdapterViewHolder holder, int position) {
+        User currentItem = userArray.get(position);
+        holder.firstName.setText(currentItem.getFirstName());
+        holder.lastName.setText(currentItem.getLastName());
     }
 
     @Override
     public int getItemCount() {
-        return restaurantArray.size();
+        return userArray.size();
     }
-
 }

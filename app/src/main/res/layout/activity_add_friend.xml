@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddFavBar"
+    tools:context=".AddFriend"
     android:background="@drawable/pop_gradient">
+
 
     <RelativeLayout
         android:layout_marginTop="5dp"
-        android:id="@+id/relativeLayoutSearchBarRestaurant"
+        android:id="@+id/relativeLayout_search_bar_friend"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:background="@drawable/white_border"
@@ -17,11 +17,11 @@
         >
 
         <EditText
-            android:id="@+id/input_search_favbar_modal"
+            android:id="@+id/input_search_friend_modal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:hint="@string/enter_restaurant_to_add"
+            android:hint="@string/search_for_friends"
             android:imeOptions="actionSearch"
             android:textColor="#000"
             android:textSize="15sp"
@@ -37,25 +37,28 @@
             android:src="@drawable/ic_magnify" />
         <Button
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/add_bar_modal_button"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/add_friend_modal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_bar"
-            android:layout_toRightOf="@+id/input_search_favbar_modal"
+            android:text="@string/add"
+            android:layout_toRightOf="@+id/input_search_friend_modal"
             />
+
+
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/recycleRelative"
+        android:id="@+id/recycleRelativeAddFriend"
         android:layout_width="275dp"
         android:layout_height="400dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/relativeLayoutSearchBarRestaurant">
+        android:layout_below="@+id/relativeLayout_search_bar_friend">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/restaurantRecycleView"
+            android:id="@+id/friend_recycleView"
             android:padding="4dp"
             android:scrollbars="vertical"
             />

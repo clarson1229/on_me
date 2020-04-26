@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,28 +27,26 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class AddFavBar extends Activity {
+public class AddFriend extends Activity {
     private String userId;
-    private String restaurantString;
+    private String userJString;
+    private ArrayList<User> userArrayList;
+    private RecyclerView userRecyclerView;
+    private FriendRecyclerAdapter uAdapter;
+    private RecyclerView.LayoutManager uLayoutManager;
 
-    private ArrayList<Restaurant> restaurantArrayList;
-    private RecyclerView resRecyclerView;
-    private RestaurantRecyclerAdapter rAdapter;
-    private RecyclerView.LayoutManager rLayoutManager;
-    private static final String TAG = "AddFavBarModal";
+    private static final String TAG = "AddFriend";
     private Button saveButton;
-    private Restaurant selectedRestaurant;
+    private User selectedUser;
     private EditText searchEditText;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_fav_bar);
-        // Setting the size of the popup
+        setContentView(R.layout.activity_add_friend);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -59,20 +56,22 @@ public class AddFavBar extends Activity {
         // getting the data from main activity
         Bundle b = getIntent().getExtras();
         if(b!=null) {
-            restaurantString =(String) b.get("ARRAY_STRING");
+            userJString =(String) b.get("ARRAY_STRING");
             userId = (String) b.get("USER_NAME");
         }
-        // converting data back to object list then to an array list.
-        Restaurant[] tempList = new Gson().fromJson(restaurantString, Restaurant[].class);
-        restaurantArrayList = new ArrayList<Restaurant>();
+        // converting data from a string to an object
+        User[] tempList = new Gson().fromJson(userJString, User[].class);
+        userArrayList = new ArrayList<User>();
         for (int i = 0; i < tempList.length; i ++){
-            restaurantArrayList.add(tempList[i]);
+            if (!(tempList[i].getUserId().equals(userId))){
+                userArrayList.add(tempList[i]);
+
+            }
         }
 
-        Log.d(TAG, restaurantArrayList.toString());
-        // Setting up Recycler
+        Log.d(TAG, userArrayList.toString());
         buildRecyclerView();
-        searchEditText = findViewById(R.id.input_search_favbar_modal);
+        searchEditText = findViewById(R.id.input_search_friend_modal);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,59 +79,54 @@ public class AddFavBar extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                rAdapter.getFilter().filter(s.toString());
+                uAdapter.getFilter().filter(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
-        saveButton = findViewById(R.id.add_bar_modal_button);
+        saveButton = findViewById(R.id.add_friend_modal_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard();
+//                hideKeyboard();
                 // todo get the variables from the object
-                AddFavBar.createFavBar CFB = new createFavBar();
-                CFB.execute(userId,selectedRestaurant.getResId(), selectedRestaurant.getResAddress(), selectedRestaurant.getResName());
+                AddFriend.createFriends CF = new createFriends();
+                CF.execute(userId, selectedUser.getUserId());
             }
         });
-
     }
     public void buildRecyclerView(){
-        resRecyclerView = findViewById(R.id.restaurantRecycleView);
-        resRecyclerView.setHasFixedSize(true);
-        rLayoutManager = new LinearLayoutManager(this);
-        rAdapter = new RestaurantRecyclerAdapter(restaurantArrayList);
+        // todo set up recycler.
+        userRecyclerView = findViewById(R.id.friend_recycleView);
+        userRecyclerView.setHasFixedSize(true);
+        uLayoutManager = new LinearLayoutManager(this);
+        uAdapter = new FriendRecyclerAdapter(userArrayList);
 
-        resRecyclerView.setLayoutManager(rLayoutManager);
-        resRecyclerView.setAdapter(rAdapter);
-        rAdapter.setOnItemClickListener(new RestaurantRecyclerAdapter.OnItemClickListener() {
+        userRecyclerView.setLayoutManager(uLayoutManager);
+        userRecyclerView.setAdapter(uAdapter);
+        uAdapter.setOnItemClickListener(new FriendRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d(TAG, "itemClicked: "+restaurantArrayList.get(position).getResName());
-                selectedRestaurant = restaurantArrayList.get(position);
-                searchEditText.setText(restaurantArrayList.get(position).getResName());
+                Log.d(TAG, "itemClicked: "+userArrayList.get(position).getFullName());
+                selectedUser = userArrayList.get(position);
+                searchEditText.setText(userArrayList.get(position).getFullName());
             }
         });
     }
-
-    private class createFavBar extends AsyncTask<String, Void, String> {
+    private class createFriends extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String result = "";
             String userId = params[0];
-            String resId = params[1];
-            String resAddress = params[2];
-            String resName = params[3];
+            String friend2 = params[1];
 
-
-
-            String connstr = "http://connorlarson.ddns.net/restapi/create/fav_bars.php";
+            String connstr = "http://connorlarson.ddns.net/restapi/create/friends.php";
 
             try {
                 URL url = new URL(connstr);
-                String param = "name=" + resName + "&address=" + resAddress + "&user=" + userId + "&resId=" + resId;
+                String param = "user1=" + userId + "&user2=" + friend2;
                 Log.d(TAG, "param:" + param);
 
                 // Open a connection using HttpURLConnection
@@ -142,7 +136,7 @@ public class AddFavBar extends Activity {
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);
                 con.setDoInput(true);
-                con.setInstanceFollowRedirects(false);
+//                con.setInstanceFollowRedirects(false);
                 con.setRequestMethod("POST");
                 con.setFixedLengthStreamingMode(param.getBytes().length);
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -183,10 +177,11 @@ public class AddFavBar extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d(TAG, "onPostExecute: Result = " + result);
+            Log.d(TAG, "onPostExecute: Result =" + result);
             // ends the activity
             Intent output = new Intent();
-            if (result.equals("Success.")){
+            // todo fix this     this result string will be different
+            if (result.equals("Success 1 of 2. Success 2 of 2.")){
                 setResult(RESULT_OK, output);
 
             }else {
@@ -195,6 +190,8 @@ public class AddFavBar extends Activity {
             finish();
         }
     }
+
+
     public void hideKeyboard() {
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);

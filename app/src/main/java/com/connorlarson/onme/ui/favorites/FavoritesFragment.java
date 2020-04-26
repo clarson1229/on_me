@@ -78,9 +78,7 @@ public class FavoritesFragment extends Fragment {
     private void init() {
         updateScrollViews();
         restaurantMap = activity.getRestaurantMap();
-        // todo fix this below
         for (String s: restaurantMap.keySet()){
-            Log.d(TAG,"init: "+  restaurantMap.get(s).toString());
             restaurantArray.add(restaurantMap.get(s));
         }
         restaurantJString = new Gson().toJson(restaurantArray);

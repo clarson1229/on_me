@@ -45,6 +45,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
     public Map<String, Restaurant> getRestaurantMap() {
         return restaurantMap;
     }
+    private ArrayList<User> userArrayList =  new ArrayList<>();
+    public ArrayList<User> getUserArrayList() {
+        return userArrayList;
+    }
+
+
 //    private SharedViewModel sharedViewModel;
     private String userId;
     private Pair<Double, Double> latLong = Pair.create(39.028015127394035,-94.5739747663232);
@@ -94,8 +101,10 @@ public class MainActivity extends AppCompatActivity {
 //        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         Log.d("Main on create", userId);
         getRestaurantPoints GRP = new getRestaurantPoints();
-//
         GRP.execute();
+
+        getUsers GU = new getUsers();
+        GU.execute();
 
     }
     // Gives fragments access to the data.
@@ -120,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private class getRestaurantPoints extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
+            Log.d(TAG, "getRestaurantPoints started");
             String result="";
 
             String connstr = "http://connorlarson.ddns.net/restapi/restaurants.php";
@@ -140,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Send
                 PrintWriter out = new PrintWriter(con.getOutputStream());
-                Log.d(TAG, "out Stream" + out);
+                Log.d(TAG, "restaurants out Stream" + out);
 
                 out.close();
 
@@ -152,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    Log.d(TAG, "POST request send successful: " + in);
+                    Log.d(TAG, "restaurants POST request send successful: " + in);
 
                     String line = null;
                     StringBuilder sb = new StringBuilder();
@@ -174,12 +184,8 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String result){
-            Log.d(TAG, "onPostExecute: Result = "+ result);
+            Log.d(TAG, "onPostExecute: restaurants Result = "+ result);
             processResults(result);
-            // itrerateing through the hashMap that has now been created
-
-
-
         }
     }
 
@@ -207,7 +213,91 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    private class getUsers extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "getUsers: started");
+            String result="";
 
+            String connstr = "http://connorlarson.ddns.net/restapi/users.php";
+
+            try{
+                URL url = new URL(connstr);
+
+                // Open a connection using HttpURLConnection
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+                con.setReadTimeout(7000);
+                con.setConnectTimeout(7000);
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                con.setInstanceFollowRedirects(false);
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                // Send
+                PrintWriter out = new PrintWriter(con.getOutputStream());
+                Log.d(TAG, "Users out Stream" + out);
+
+                out.close();
+
+                con.connect();
+                BufferedReader in = null;
+                if (con.getResponseCode() != 200) {
+                    in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                    Log.d(TAG, "!=200: " + in);
+
+                } else {
+                    in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    Log.d(TAG, "Users POST request send successful: " + in);
+
+                    String line = null;
+                    StringBuilder sb = new StringBuilder();
+                    while((line = in.readLine()) != null)
+                    {
+                        // Append server response in string
+                        sb.append(line);
+                    }
+                    result = sb.toString();
+                    con.disconnect();
+                    return result;
+                }
+            }catch (MalformedURLException ex) {
+                ex.printStackTrace();
+            }catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String result){
+            Log.d(TAG, "onPostExecute: users Result = "+ result);
+            processResultUsers(result);
+        }
+    }
+
+    private void processResultUsers (String response){
+        try {
+            JSONObject reader = new JSONObject(response);
+            JSONArray usersArray = reader.getJSONArray("Users");
+            userArrayList.clear();
+            for (int i = 0; i< usersArray.length(); i++){
+                JSONObject obj = usersArray.getJSONObject(i);
+                String tempId = obj.getString("userId");
+                String tempFirst = obj.getString("firstName");
+                String tempLast = obj.getString("lastName");
+
+                Log.d(TAG, "processResultUsers: id="+ tempId +" tempFirst=" + tempFirst + " tempLast=" + tempLast);
+
+                User user = new User(tempId,tempFirst,tempLast);
+                userArrayList.add(user);
+                Log.d(TAG,"processResultUsers: " + userArrayList.toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 

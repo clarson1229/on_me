@@ -144,7 +144,7 @@ public class AddFavDrink extends Activity {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         } catch (Exception e) {
-            Log.d(TAG, "Keyboard now open ");
+            Log.d(TAG, "Keyboard not open ");
         }
     }
 }
