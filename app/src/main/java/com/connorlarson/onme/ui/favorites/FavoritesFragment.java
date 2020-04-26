@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
@@ -56,6 +57,9 @@ public class FavoritesFragment extends Fragment {
     private Map<String, Restaurant> restaurantMap =  new HashMap<>();
     private ArrayList<Restaurant> restaurantArray = new ArrayList<>();
     private String restaurantJString;
+
+    private static final int MODAL_REQUEST_CODE = 0;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_favorites, container, false);
@@ -88,7 +92,8 @@ public class FavoritesFragment extends Fragment {
                 Intent i = new Intent(activity, AddFavBar.class);
                 i.putExtra("USER_NAME", userId);
                 i.putExtra("ARRAY_STRING",  restaurantJString);
-                startActivity(i);
+//                startActivity(i);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
             }
         });
         addDrinkButton.setOnClickListener(new View.OnClickListener() {
@@ -96,12 +101,25 @@ public class FavoritesFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(activity, AddFavDrink.class);
                 i.putExtra("USER_NAME", userId);
-                startActivity(i);
+//                startActivity(i);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
 
 
             }
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onactivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        if (requestCode == MODAL_REQUEST_CODE) {
+            if (resultCode == activity.RESULT_OK) {
+                updateScrollViews();
+            }
+        }
+    }
+
     private void updateScrollViews() {
         FavoritesFragment.getFavBars GFB = new getFavBars();
         GFB.execute(userId);

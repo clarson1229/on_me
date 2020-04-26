@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -131,7 +132,7 @@ public class AddFavBar extends Activity {
 
             try {
                 URL url = new URL(connstr);
-                String param = "sender=" + sender + "&reciever=" + reciever + "&amount=" + amount + "&message=" + message + "&restId=" + restId;
+                String param = "name=" + resName + "&address=" + resAddress + "&user=" + userId + "&resId=" + resId;
                 Log.d(TAG, "param:" + param);
 
                 // Open a connection using HttpURLConnection
@@ -184,6 +185,13 @@ public class AddFavBar extends Activity {
         protected void onPostExecute(String result) {
             Log.d(TAG, "onPostExecute: Result = " + result);
             // ends the activity
+            Intent output = new Intent();
+            if (result.equals("Success.")){
+                setResult(RESULT_OK, output);
+
+            }else {
+                setResult(RESULT_CANCELED, output);
+            }
             finish();
         }
     }
