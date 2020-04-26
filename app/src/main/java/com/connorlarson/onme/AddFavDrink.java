@@ -67,8 +67,8 @@ public class AddFavDrink extends Activity {
         protected String doInBackground(String... params) {
             String result = "";
             String userId = params[0];
-            String dDescription = params[1];
-            String dName = params[2];
+            String dName = params[1];
+            String dDescription = params[2];
 
 
 
