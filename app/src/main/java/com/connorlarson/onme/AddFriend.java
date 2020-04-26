@@ -1,6 +1,5 @@
 package com.connorlarson.onme;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,15 +89,13 @@ public class AddFriend extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                hideKeyboard();
-                // todo get the variables from the object
+                hideKeyboard();
                 AddFriend.createFriends CF = new createFriends();
                 CF.execute(userId, selectedUser.getUserId());
             }
         });
     }
     public void buildRecyclerView(){
-        // todo set up recycler.
         userRecyclerView = findViewById(R.id.friend_recycleView);
         userRecyclerView.setHasFixedSize(true);
         uLayoutManager = new LinearLayoutManager(this);
@@ -180,7 +177,6 @@ public class AddFriend extends Activity {
             Log.d(TAG, "onPostExecute: Result =" + result);
             // ends the activity
             Intent output = new Intent();
-            // todo fix this     this result string will be different
             if (result.equals("Success 1 of 2. Success 2 of 2.")){
                 setResult(RESULT_OK, output);
 

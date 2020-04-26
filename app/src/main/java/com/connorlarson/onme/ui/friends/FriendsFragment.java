@@ -72,7 +72,6 @@ public class FriendsFragment extends Fragment {
         updateScrollViews();
 
 
-        // todo fix this onclick
         addFriendButton = mView.findViewById(R.id.add_friend_button);
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override

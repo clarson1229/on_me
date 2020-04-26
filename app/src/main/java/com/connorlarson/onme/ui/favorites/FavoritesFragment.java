@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-
 import com.connorlarson.onme.AddFavBar;
 import com.connorlarson.onme.AddFavDrink;
 import com.connorlarson.onme.FavBarAdapter;
@@ -25,11 +22,9 @@ import com.connorlarson.onme.Restaurant;
 import com.connorlarson.onme.ui.profile.FavBar;
 import com.connorlarson.onme.ui.profile.FavDrink;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -20,6 +20,7 @@
             android:id="@+id/user_Icon_Card_Imageview"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:paddingLeft="5dp"
             android:src="@drawable/ic_person"
             android:contentDescription="@string/icon_for_restaurant"/>
 

@@ -1,11 +1,8 @@
 package com.connorlarson.onme;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.google.gson.Gson;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,8 +23,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AddFavBar extends Activity {
     private String userId;
@@ -92,7 +85,7 @@ public class AddFavBar extends Activity {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                // todo get the variables from the object
+                // todo add checks to make sure field is not empty
                 AddFavBar.createFavBar CFB = new createFavBar();
                 CFB.execute(userId,selectedRestaurant.getResId(), selectedRestaurant.getResAddress(), selectedRestaurant.getResName());
             }

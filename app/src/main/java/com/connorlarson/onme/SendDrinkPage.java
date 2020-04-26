@@ -1,13 +1,8 @@
 package com.connorlarson.onme;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.Context;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,7 +65,6 @@ public class SendDrinkPage extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo Dispatch create api to create a transaction
                 String dAmountEditString = dAmountEdit.getText().toString();
                 String dMessageEditString = dMessageEdit.getText().toString();
                 Log.d(TAG, "onClick: SendButton. dAmount="+
@@ -257,7 +249,6 @@ public class SendDrinkPage extends AppCompatActivity {
             finish();
         }
     }
-    //todo write a new hide keyboard method that works in activites
     public void hideKeyboard() {
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
