@@ -1,19 +1,24 @@
 package com.connorlarson.onme.ui.profile;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.connorlarson.onme.FavBarAdapter;
 import com.connorlarson.onme.FavDrinkAdapter;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
+import com.connorlarson.onme.UpdateUserProfile;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +34,7 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "Profile Page";
-
+    private Button updateProfileButton;
     // textFields
     private TextView profileNameFirst;
     private TextView profileNameLast;
@@ -48,20 +53,21 @@ public class ProfileFragment extends Fragment {
     private String email;
     private ArrayList<FavBar> favBarArray =  new ArrayList<FavBar>();
     private ArrayList<FavDrink> favDrinkArray =  new ArrayList<FavDrink>();
+    private View mView;
 
-
+    private static final int MODAL_REQUEST_CODE = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 //        ProfileViewModal =
 //                ViewModelProviders.of(this).get(ProfileViewModal.class);
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        profileNameFirst = root.findViewById(R.id.text_profile_name_first);
-        profileNameLast = root.findViewById(R.id.text_profile_name_last);
-        profileEmail = root.findViewById(R.id.text_profile_email);
-        profileAddress = root.findViewById(R.id.text_profile_address);
-        favBarsListView = root.findViewById(R.id.bars_listView);
-        favDrinksListView = root.findViewById(R.id.drinks_listView);
+        mView = inflater.inflate(R.layout.fragment_profile, container, false);
+        profileNameFirst = mView.findViewById(R.id.text_profile_name_first);
+        profileNameLast = mView.findViewById(R.id.text_profile_name_last);
+        profileEmail = mView.findViewById(R.id.text_profile_email);
+        profileAddress = mView.findViewById(R.id.text_profile_address);
+        favBarsListView = mView.findViewById(R.id.bars_listView);
+        favDrinksListView = mView.findViewById(R.id.drinks_listView);
 
 
         activity = (MainActivity) getActivity();
@@ -86,10 +92,32 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
         updateScrollViews();
+        updateProfileButton = mView.findViewById(R.id.edit_profile_button);
+        updateProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(activity, UpdateUserProfile.class);
+                i.putExtra("USER_NAME", userId);
+                i.putExtra("FIRST_NAME", profileNameFirst.getText().toString());
+                i.putExtra("LAST_NAME", profileNameLast.getText().toString());
+                i.putExtra("EMAIL", profileEmail.getText().toString());
+                i.putExtra("ADDRESS", profileAddress.getText().toString());
 
-        return root;
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+            }
+        });
+        return mView;
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        if (requestCode == MODAL_REQUEST_CODE) {
+            if (resultCode == activity.RESULT_OK) {
+                updateUserInfo();
+            }
+        }
+    }
     private void updateUserInfo(){
         ProfileFragment.getUserInfo GUI = new getUserInfo();
         GUI.execute(userId);

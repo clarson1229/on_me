@@ -22,6 +22,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".UpdateUserProfile"
+            android:theme="@style/AppTheme.Popup"/>
+        <activity
             android:name=".AddFriend"
             android:theme="@style/AppTheme.Popup" />
         <activity

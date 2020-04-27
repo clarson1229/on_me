@@ -51,5 +51,9 @@
     <string name="icon_for_restaurant">Icon for Restaurant</string>
     <string name="search_for_friends">Search For Friends</string>
     <string name="add">Add</string>
+    <string name="email">Email</string>
+    <string name="last_name">Last Name</string>
+    <string name="frist_name">Frist Name</string>
+    <string name="address">Address</string>
 
 </resources>
