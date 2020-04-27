@@ -1,6 +1,5 @@
 package com.connorlarson.onme.ui.history;
 
-import android.Manifest;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,12 +28,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+// Todo style this
 public class HistoryFragment extends Fragment {
     private static final String TAG = "HistoryFragment";
     // data vars
@@ -163,9 +162,4 @@ public class HistoryFragment extends Fragment {
 
         }
     }
-
-//    Todo write the dispacth to load in transactions
-    // Write the adapter for the list view
-    // add varaibles to this function. buttons and text views and things.
-
 }

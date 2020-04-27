@@ -1,31 +1,30 @@
 package com.connorlarson.onme.ui.favorites;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
+import com.connorlarson.onme.AddFavBar;
+import com.connorlarson.onme.AddFavDrink;
 import com.connorlarson.onme.FavBarAdapter;
 import com.connorlarson.onme.FavDrinkAdapter;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
+import com.connorlarson.onme.Restaurant;
 import com.connorlarson.onme.ui.profile.FavBar;
 import com.connorlarson.onme.ui.profile.FavDrink;
-
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,6 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FavoritesFragment extends Fragment {
 
@@ -46,6 +47,13 @@ public class FavoritesFragment extends Fragment {
     private String userId;
     private ArrayList<FavBar> favBarArray =  new ArrayList<FavBar>();
     private ArrayList<FavDrink> favDrinkArray =  new ArrayList<FavDrink>();
+    private Button addBarButton;
+    private Button addDrinkButton;
+    private Map<String, Restaurant> restaurantMap =  new HashMap<>();
+    private ArrayList<Restaurant> restaurantArray = new ArrayList<>();
+    private String restaurantJString;
+
+    private static final int MODAL_REQUEST_CODE = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,12 +61,59 @@ public class FavoritesFragment extends Fragment {
         favBarsListView = mView.findViewById(R.id.favorite_bar_ListView);
         favDrinksListView = mView.findViewById(R.id.favorite_drink_ListView);
 
+
+        addBarButton = mView.findViewById(R.id.add_favorite_bar_button);
+        addDrinkButton = mView.findViewById(R.id.add_favorite_drink_button);
+
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
-        updateScrollViews();
-
+        init();
         return mView;
     }
+    private void init() {
+        restaurantMap = activity.getRestaurantMap();
+
+        for (String s: restaurantMap.keySet()){
+            restaurantArray.add(restaurantMap.get(s));
+        }
+        updateScrollViews();
+//        restaurantJString = new Gson().toJson(restaurantArray);
+//        Log.d(TAG,"init:  converting array to json"+ restaurantJString);
+
+        addBarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFavBar.class);
+                i.putExtra("USER_NAME", userId);
+                i.putExtra("ARRAY_STRING",  restaurantJString);
+//                startActivity(i);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+            }
+        });
+        addDrinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, AddFavDrink.class);
+                i.putExtra("USER_NAME", userId);
+//                startActivity(i);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onactivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        if (requestCode == MODAL_REQUEST_CODE) {
+            if (resultCode == activity.RESULT_OK) {
+                updateScrollViews();
+            }
+        }
+    }
+
     private void updateScrollViews() {
         FavoritesFragment.getFavBars GFB = new getFavBars();
         GFB.execute(userId);
@@ -129,28 +184,53 @@ public class FavoritesFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             Log.d(TAG, "onPostExecute: Result = "+ result);
-            try {
-                JSONObject reader = new JSONObject(result);
-                JSONArray favBarsArray = reader.getJSONArray("FavBars");
-                favBarArray.clear();
-                for (int i = 0; i< favBarsArray.length(); i++){
-                    JSONObject obj = favBarsArray.getJSONObject(i);
-                    String tempFavId = obj.getString("FavBarId");
-                    String tempName = obj.getString("BarName");
-                    String tempAddress = obj.getString("BarAddress");
-                    String tempResId = obj.getString("RestaurantId");
-                    Log.d(TAG, "onPostExecute: id="+ tempFavId +" name=" + tempName + " address=" + tempAddress +" ResId=" +tempResId);
+            if (!result.equals("No Favorite bars created")) {
+                try {
+                    JSONObject reader = new JSONObject(result);
+                    JSONArray favBarsArray = reader.getJSONArray("FavBars");
+                    favBarArray.clear();
+                    for (int i = 0; i < favBarsArray.length(); i++) {
+                        JSONObject obj = favBarsArray.getJSONObject(i);
+                        String tempFavId = obj.getString("FavBarId");
+                        String tempName = obj.getString("BarName");
+                        String tempAddress = obj.getString("BarAddress");
+                        String tempResId = obj.getString("RestaurantId");
+                        Log.d(TAG, "onPostExecute: id=" + tempFavId + " name=" + tempName + " address=" + tempAddress + " ResId=" + tempResId);
 
-                    FavBar favBar = new FavBar(tempName,tempAddress,tempFavId,tempResId);
-                    favBarArray.add(favBar);
+                        FavBar favBar = new FavBar(tempName, tempAddress, tempFavId, tempResId);
+                        favBarArray.add(favBar);
+                    }
+                    // filtering done here
+                    // if the favbar array has items then do fitering
+                    ArrayList<Restaurant> tempArray = new ArrayList<>();
+                    for (Restaurant restaurant : restaurantArray) {
+                        boolean isAdded = false;
+                        for (FavBar bar : favBarArray) {
+                            Log.d(TAG, "restaurant=" + restaurant.getResName() + " Bar= " + bar.getfBarName());
+                            Log.d(TAG, "value=" + restaurant.getResName().equals(bar.getfBarName()));
+
+                            if (restaurant.getResName().equals(bar.getfBarName())) {
+                                isAdded = true;
+                            }
+                        }
+                        if (!isAdded) {
+                            tempArray.add(restaurant);
+                        }
+                    }
+                    restaurantJString = new Gson().toJson(tempArray);
+                    Log.d(TAG, "onPostExecute:  converting array to json" + restaurantJString);
+
+
+                    Log.d(TAG, "onPostExecute: setting adapter");
+                    FavBarAdapter favBarAdapter = new FavBarAdapter(activity, favBarArray);
+                    favBarsListView.setAdapter(favBarAdapter);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                Log.d(TAG, "onPostExecute: setting adapter");
-                FavBarAdapter favBarAdapter = new FavBarAdapter(activity, favBarArray);
-                favBarsListView.setAdapter(favBarAdapter);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }else {
+                restaurantJString = new Gson().toJson(restaurantArray);
+                Log.d(TAG,"onPostExecute:  converting array to json"+ restaurantJString);
             }
 
         }
@@ -217,26 +297,28 @@ public class FavoritesFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             Log.d(TAG, "onPostExecute: Result = "+ result);
-            try {
-                JSONObject reader = new JSONObject(result);
-                JSONArray favBarsArray = reader.getJSONArray("FavDrinks");
-                favDrinkArray.clear();
-                for (int i = 0; i< favBarsArray.length(); i++){
-                    JSONObject obj = favBarsArray.getJSONObject(i);
-                    String tempDrinkId = obj.getString("DrinkId");
-                    String tempName = obj.getString("DrinkName");
-                    String tempDescription = obj.getString("DrinkDescription");
-                    Log.d(TAG, "onPostExecute: id="+ tempDrinkId +" name=" + tempName + " description=" + tempDescription);
+            if (!result.equals("No Favorite drinks created")) {
+                try {
+                    JSONObject reader = new JSONObject(result);
+                    JSONArray favBarsArray = reader.getJSONArray("FavDrinks");
+                    favDrinkArray.clear();
+                    for (int i = 0; i < favBarsArray.length(); i++) {
+                        JSONObject obj = favBarsArray.getJSONObject(i);
+                        String tempDrinkId = obj.getString("DrinkId");
+                        String tempName = obj.getString("DrinkName");
+                        String tempDescription = obj.getString("DrinkDescription");
+                        Log.d(TAG, "onPostExecute: id=" + tempDrinkId + " name=" + tempName + " description=" + tempDescription);
 
-                    FavDrink favDrink = new FavDrink(tempDrinkId,tempName,tempDescription);
-                    favDrinkArray.add(favDrink);
-                }
-                Log.d(TAG, "onPostExecute: setting adapter");
+                        FavDrink favDrink = new FavDrink(tempDrinkId, tempName, tempDescription);
+                        favDrinkArray.add(favDrink);
+                    }
+                    Log.d(TAG, "onPostExecute: setting adapter");
                     FavDrinkAdapter favDrinkAdapter = new FavDrinkAdapter(activity, favDrinkArray);
-                favDrinksListView.setAdapter(favDrinkAdapter);
+                    favDrinksListView.setAdapter(favDrinkAdapter);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddFavBar"
+    android:background="@drawable/pop_gradient">
+
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/relativeLayoutSearchBarRestaurant"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:background="@drawable/white_border"
+        android:layout_centerHorizontal="true"
+        >
+
+        <EditText
+            android:id="@+id/input_search_favbar_modal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/enter_restaurant_to_add"
+            android:imeOptions="actionSearch"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/ic_magnify"/>
+
+        <ImageView
+            android:id="@+id/ic_magnify"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_magnify" />
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/add_bar_modal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_bar"
+            android:layout_toRightOf="@+id/input_search_favbar_modal"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/recycleRelative"
+        android:layout_width="275dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/relativeLayoutSearchBarRestaurant">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/restaurantRecycleView"
+            android:padding="4dp"
+            android:scrollbars="vertical"
+            />
+    </RelativeLayout>
+</RelativeLayout>
