@@ -55,5 +55,9 @@
     <string name="last_name">Last Name</string>
     <string name="frist_name">Frist Name</string>
     <string name="address">Address</string>
+    <string name="user_name">User Name</string>
+    <string name="first_name">First Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

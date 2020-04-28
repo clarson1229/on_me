@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -181,7 +183,7 @@ public class AddFavBar extends Activity {
             Intent output = new Intent();
             if (result.equals("Success.")){
                 setResult(RESULT_OK, output);
-
+                Toast.makeText(getApplicationContext(),"Favorite Bar Successfully Added",Toast.LENGTH_SHORT).show();
             }else {
                 setResult(RESULT_CANCELED, output);
             }
