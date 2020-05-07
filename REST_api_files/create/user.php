@@ -1,7 +1,7 @@
 <?php
 $db = "on_me";
-$dbuser = "root";
-$pass = "gunni";
+$dbuser = "";
+$pass = "";
 $host = "localhost";
 
 $userId = $_POST["user"];
