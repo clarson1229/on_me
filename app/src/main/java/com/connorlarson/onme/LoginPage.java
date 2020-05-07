@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.os.AsyncTask;
@@ -24,7 +25,9 @@ public class LoginPage extends AppCompatActivity {
     EditText username;
     EditText password;
     TextView results;
+    private Button signUp;
     private static final String TAG = "Login Pageee";
+    private static final int MODAL_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,17 @@ public class LoginPage extends AppCompatActivity {
         username = (EditText)findViewById(R.id.username_text);
         password = (EditText)findViewById(R.id.password_text);
         results = (TextView)findViewById(R.id.Results_text);
+        signUp = findViewById(R.id.sign_up_button);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), SignUp.class);
+
+//                startActivity(i);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+
+            }
+        });
     }
 
     public void attemptLogIn(View view) {

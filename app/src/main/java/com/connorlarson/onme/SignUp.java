@@ -1,14 +1,11 @@
 package com.connorlarson.onme;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,105 +21,60 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
-public class AddFriend extends Activity {
-    private String userId;
-    private String userJString;
-    private ArrayList<User> userArrayList;
-    private RecyclerView userRecyclerView;
-    private FriendRecyclerAdapter uAdapter;
-    private RecyclerView.LayoutManager uLayoutManager;
-
-    private static final String TAG = "AddFriend";
+public class SignUp extends Activity {
+    private EditText userID;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText email;
+    private EditText address;
+    private EditText password;
     private Button saveButton;
-    private User selectedUser;
-    private EditText searchEditText;
-
-
+    private static final String TAG = "SignUpActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_friend);
+        setContentView(R.layout.activity_sign_up);
+        // Setting the size of the popup
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.75));
-
-        // getting the data from main activity
-        Bundle b = getIntent().getExtras();
-        if(b!=null) {
-            userJString =(String) b.get("ARRAY_STRING");
-            userId = (String) b.get("USER_NAME");
-        }
-        // converting data from a string to an object
-        User[] tempList = new Gson().fromJson(userJString, User[].class);
-        userArrayList = new ArrayList<User>();
-        for (int i = 0; i < tempList.length; i ++){
-            if (!(tempList[i].getUserId().equals(userId))){
-                userArrayList.add(tempList[i]);
-
-            }
-        }
-
-        Log.d(TAG, userArrayList.toString());
-        buildRecyclerView();
-        searchEditText = findViewById(R.id.input_search_friend_modal);
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                uAdapter.getFilter().filter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        saveButton = findViewById(R.id.add_friend_modal_button);
+        userID = findViewById(R.id.userName_editText);
+        firstName = findViewById(R.id.firstName_editText);
+        lastName = findViewById(R.id.lastName_editText);
+        email = findViewById(R.id.userEmail_editText);
+        address = findViewById(R.id.userAddress_editText);
+        password = findViewById(R.id.userPassword_editText);
+        saveButton = findViewById(R.id.saveSignupButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                AddFriend.createFriends CF = new createFriends();
-                CF.execute(userId, selectedUser.getUserId());
+                SignUp.createUser CU = new createUser();
+                CU.execute(userID.getText().toString(),firstName.getText().toString(),lastName.getText().toString(),email.getText().toString(),address.getText().toString(),password.getText().toString());
             }
         });
-    }
-    public void buildRecyclerView(){
-        userRecyclerView = findViewById(R.id.friend_recycleView);
-        userRecyclerView.setHasFixedSize(true);
-        uLayoutManager = new LinearLayoutManager(this);
-        uAdapter = new FriendRecyclerAdapter(userArrayList);
 
-        userRecyclerView.setLayoutManager(uLayoutManager);
-        userRecyclerView.setAdapter(uAdapter);
-        uAdapter.setOnItemClickListener(new FriendRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d(TAG, "itemClicked: "+userArrayList.get(position).getFullName());
-                selectedUser = userArrayList.get(position);
-                searchEditText.setText(userArrayList.get(position).getFullName());
-            }
-        });
     }
-    private class createFriends extends AsyncTask<String, Void, String> {
+    private class createUser extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String result = "";
             String userId = params[0];
-            String friend2 = params[1];
+            String firstName = params[1];
+            String lastName = params[2];
+            String email = params[3];
+            String address = params[4];
+            String password = params[5];
 
-            String connstr = "http://connorlarson.ddns.net/restapi/create/friends.php";
+            String connstr = "http://connorlarson.ddns.net/restapi/create/user.php";
 
             try {
                 URL url = new URL(connstr);
-                String param = "user1=" + userId + "&user2=" + friend2;
+                String param = "user=" + userId + "&firstName=" + firstName + "&lastName=" + lastName + "&email=" + email +"&address="+address+"&password="+password;
                 Log.d(TAG, "param:" + param);
 
                 // Open a connection using HttpURLConnection
@@ -134,7 +84,7 @@ public class AddFriend extends Activity {
                 con.setConnectTimeout(7000);
                 con.setDoOutput(true);
                 con.setDoInput(true);
-//                con.setInstanceFollowRedirects(false);
+                con.setInstanceFollowRedirects(false);
                 con.setRequestMethod("POST");
                 con.setFixedLengthStreamingMode(param.getBytes().length);
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -153,7 +103,7 @@ public class AddFriend extends Activity {
 
                 } else {
                     in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    Log.d(TAG, "POST request send successful: " + in);
+                    Log.d(TAG, "Signup POST request send successful: " + in);
 
                     String line = null;
                     StringBuilder sb = new StringBuilder();
@@ -175,12 +125,13 @@ public class AddFriend extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d(TAG, "onPostExecute: Result =" + result);
+            Log.d(TAG, "update onPostExecute: Result = " + result);
             // ends the activity
             Intent output = new Intent();
-            if (result.equals("Success 1 of 2. Success 2 of 2.")){
+            if (result.equals("Success.")){
                 setResult(RESULT_OK, output);
-                Toast.makeText(getApplicationContext(),"Friend Successfully Added",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"User Successfully Created",Toast.LENGTH_SHORT).show();
+
 
             }else {
                 setResult(RESULT_CANCELED, output);
@@ -188,8 +139,6 @@ public class AddFriend extends Activity {
             finish();
         }
     }
-
-
     public void hideKeyboard() {
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -198,4 +147,5 @@ public class AddFriend extends Activity {
             Log.d(TAG, "Keyboard not open ");
         }
     }
+
 }
