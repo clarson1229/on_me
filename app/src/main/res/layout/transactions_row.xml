@@ -6,65 +6,55 @@
 
 <!--    Todo this will need alot of styling-->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/TransactionIdTextView"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/RestaurantNameTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
 
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/SenderTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/RecieverTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/TransactionAmountTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:textSize="7sp"
         android:id="@+id/TransactionMessageTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
 
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:textSize="9sp"
         android:id="@+id/DateTextView"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="10dp"
-
         />
 </LinearLayout>

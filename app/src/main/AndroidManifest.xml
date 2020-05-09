@@ -22,8 +22,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SignUp"
+            android:name=".deleteFriendModal"
             android:theme="@style/AppTheme.Popup"/>
+        <activity
+            android:name=".deleteFavDrinkModal"
+            android:theme="@style/AppTheme.Popup"
+            />
+        <activity
+            android:name=".deleteFavBarModal"
+            android:theme="@style/AppTheme.Popup"/>
+        <activity
+            android:name=".SignUp"
+            android:theme="@style/AppTheme.Popup" />
         <activity
             android:name=".UpdateUserProfile"
             android:theme="@style/AppTheme.Popup" />

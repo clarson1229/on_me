@@ -59,5 +59,9 @@
     <string name="first_name">First Name</string>
     <string name="email_address">Email Address</string>
     <string name="sign_up">Sign Up</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_you_want_to_delete">Are You Sure you want to</string>
+    <string name="delete_this">delete this.</string>
 
 </resources>

@@ -169,9 +169,8 @@ public class SendDrinkPage extends AppCompatActivity {
                 }
                 // setting the list view with the data
                 Log.d(TAG, "onPostExecute: setting adapter");
-                FriendAdapter favBarAdapter = new FriendAdapter(getBaseContext(), friendsArray);
-                friendsSendListView.setAdapter(favBarAdapter);
-
+                FriendAdapterSend favBarAdapterSend = new FriendAdapterSend(getBaseContext(), friendsArray);
+                friendsSendListView.setAdapter(favBarAdapterSend);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

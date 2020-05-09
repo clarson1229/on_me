@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginPage"
-    android:layout_centerHorizontal="true">
+    android:layout_centerHorizontal="true"
+    android:background="@drawable/pop_gradient">
 
     <EditText
         android:id="@+id/username_text"
@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:hint="@string/username"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginTop="75dp"
+        android:textColorHint="#A0A9B4"
+        android:textColor="#ffffff"/>
 
     <EditText
         android:id="@+id/password_text"
@@ -23,7 +25,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/username_text"
-        android:hint="@string/password"/>
+        android:hint="@string/password"
+        android:textColorHint="#A0A9B4"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/sign_in_button"

@@ -49,6 +49,7 @@ public class FriendsFragment extends Fragment {
     private String userJString;
     private ArrayList<String> friendsArray =  new ArrayList<>();
     private ArrayList<User> userArrayList= new ArrayList<>();
+    private ArrayList<User> filteredArrayList= new ArrayList<>();
     private Button addFriendButton;
     private static final int MODAL_REQUEST_CODE = 0;
 
@@ -88,6 +89,7 @@ public class FriendsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        updateScrollViews();
         if (requestCode == MODAL_REQUEST_CODE) {
             if (resultCode == activity.RESULT_OK) {
                 updateScrollViews();
@@ -95,9 +97,14 @@ public class FriendsFragment extends Fragment {
         }
     }
     private void updateScrollViews() {
+        Log.d(TAG, " Upating Scrollviews");
         FriendsFragment.getFriends GFB = new getFriends();
         GFB.execute(userId);
 
+    }
+    private void setAdapter(ArrayList<String> arrayList){
+        FriendAdapter favBarAdapter = new FriendAdapter(this, arrayList, userId);
+        friendsListView.setAdapter(favBarAdapter);
     }
     private class getFriends extends AsyncTask<String, Void, String> {
         @Override
@@ -197,14 +204,15 @@ public class FriendsFragment extends Fragment {
                                 tempUserList.add(user);
                             }
                         }
-                        userArrayList.clear();
-                        userArrayList.addAll(tempUserList);
+
+                        filteredArrayList.clear();
+                        filteredArrayList.addAll(tempUserList);
                     }
 
                     Log.d(TAG, "onPostExecute: setting adapter");
-                    FriendAdapter favBarAdapter = new FriendAdapter(activity, friendsArray);
-                    friendsListView.setAdapter(favBarAdapter);
-                    userJString = new Gson().toJson(userArrayList);
+                    setAdapter(friendsArray);
+
+                    userJString = new Gson().toJson(filteredArrayList);
                     Log.d(TAG,"init:  converting array to json"+ userJString);
 
                 } catch (JSONException e) {

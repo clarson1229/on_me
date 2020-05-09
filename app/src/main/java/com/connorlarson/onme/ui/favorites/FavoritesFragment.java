@@ -97,8 +97,6 @@ public class FavoritesFragment extends Fragment {
                 i.putExtra("USER_NAME", userId);
 //                startActivity(i);
                 startActivityForResult(i,MODAL_REQUEST_CODE);
-
-
             }
         });
     }
@@ -106,6 +104,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Log.d(TAG, "onactivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
         if (requestCode == MODAL_REQUEST_CODE) {
             if (resultCode == activity.RESULT_OK) {
@@ -120,6 +119,14 @@ public class FavoritesFragment extends Fragment {
 
         FavoritesFragment.getFavDrinks GFD = new getFavDrinks();
         GFD.execute(userId);
+    }
+    private void setDrinkAdapter(ArrayList<FavDrink> arrayList){
+        FavDrinkAdapter favDrinkAdapter = new FavDrinkAdapter(this, arrayList);
+        favDrinksListView.setAdapter(favDrinkAdapter);
+    }
+    private void setBarAdapter(ArrayList<FavBar> arrayList){
+        FavBarAdapter favBarAdapter = new FavBarAdapter(this, arrayList);
+        favBarsListView.setAdapter(favBarAdapter);
     }
 
     private class getFavBars extends AsyncTask<String, Void, String> {
@@ -222,9 +229,7 @@ public class FavoritesFragment extends Fragment {
 
 
                     Log.d(TAG, "onPostExecute: setting adapter");
-                    FavBarAdapter favBarAdapter = new FavBarAdapter(activity, favBarArray);
-                    favBarsListView.setAdapter(favBarAdapter);
-
+                    setBarAdapter(favBarArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -313,8 +318,8 @@ public class FavoritesFragment extends Fragment {
                         favDrinkArray.add(favDrink);
                     }
                     Log.d(TAG, "onPostExecute: setting adapter");
-                    FavDrinkAdapter favDrinkAdapter = new FavDrinkAdapter(activity, favDrinkArray);
-                    favDrinksListView.setAdapter(favDrinkAdapter);
+                    setDrinkAdapter(favDrinkArray);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
