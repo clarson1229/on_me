@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -22,8 +23,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
+import com.android.volley.toolbox.HttpResponse;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
 import com.connorlarson.onme.Restaurant;
@@ -46,14 +50,47 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.location.Address;
+import android.util.Log;
+//import org.apache.http.HttpEntity;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.ClientProtocolException;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpGet;
+//import org.apache.http.client.params.AllClientPNames;
+//import org.apache.http.impl.client.DefaultHttpClient;
+//import org.apache.http.util.EntityUtils;
+//import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     // statics
+    private static final int MODAL_REQUEST_CODE = 0;
     private static final String TAG = "HomeFragment";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -160,13 +197,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 intent.putExtra("USER_NAME", userId);
                 intent.putExtra("RESTAURANT", selectedPlace);
                 intent.putExtra("RESTAURANT_ID", selectedPlaceId);
-                startActivity(intent);
+                startActivityForResult(intent,MODAL_REQUEST_CODE);
+
 
             }
         });
         hideSoftKeyboard();
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: Modal_request_code=" + requestCode+ "resultCode="+ resultCode);
+        selectedPlaceTextView.setText("");
+        mSearchText.setText("");
+    }
     private void getDeviceLocation(){
         Log.d(TAG,"Getting Device location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
@@ -246,8 +290,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mMap.addMarker(new MarkerOptions().position(restaurantMap.get(s).getResLatLong()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(restaurantMap.get(s).getResName()).snippet(s));
         }
     }
-
-
 
 
     public LatLng getLocationFromAddress(Context context,String strAddress) {

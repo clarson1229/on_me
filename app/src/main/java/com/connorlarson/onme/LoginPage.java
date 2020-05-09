@@ -1,6 +1,8 @@
 package com.connorlarson.onme;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +30,11 @@ public class LoginPage extends AppCompatActivity {
     private Button signUp;
     private static final String TAG = "Login Pageee";
     private static final int MODAL_REQUEST_CODE = 0;
-
+    SharedPreferences sp;
+    private void goToMainActivity(){
+        Intent i = new Intent(getBaseContext(), SignUp.class);
+        startActivityForResult(i,MODAL_REQUEST_CODE);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +42,17 @@ public class LoginPage extends AppCompatActivity {
         username = (EditText)findViewById(R.id.username_text);
         password = (EditText)findViewById(R.id.password_text);
         results = (TextView)findViewById(R.id.Results_text);
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+
+        if(sp.getBoolean("logged",false)){
+            goToMainActivity();
+        }
         signUp = findViewById(R.id.sign_up_button);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(), SignUp.class);
-
-//                startActivity(i);
-                startActivityForResult(i,MODAL_REQUEST_CODE);
-
+                goToMainActivity();
+                sp.edit().putBoolean("logged",true).apply();
             }
         });
     }

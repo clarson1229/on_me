@@ -33,7 +33,7 @@ public class deleteFavBarModal extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.8),(int)(height*.15));
+        getWindow().setLayout((int)(width*.8),(int)(height*.35));
 
         // getting the data from main activity
         Bundle b = getIntent().getExtras();

@@ -73,24 +73,7 @@ public class ProfileFragment extends Fragment {
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
         updateUserInfo();
-//        ProfileViewModal.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textProfile.setText(s);
-//            }
-//        });
-//        ProfileViewModal.getProfileName().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                profileName.setText(s);
-//            }
-//        });
-//        ProfileViewModal.getProfileEmail().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                profileEmail.setText(s);
-//            }
-//        });
+
         updateScrollViews();
         updateProfileButton = mView.findViewById(R.id.edit_profile_button);
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +197,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     private void setBarAdapter(ArrayList<FavBar> arrayList){
-        FavBarAdapter favBarAdapter = new FavBarAdapter(this, arrayList);
+        FavBarAdapter2 favBarAdapter = new FavBarAdapter2(this, arrayList);
         favBarsListView.setAdapter(favBarAdapter);
     }
     private class getFavBars extends AsyncTask<String, Void, String> {
@@ -305,7 +288,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     private void setDrinkAdapter(ArrayList<FavDrink> arrayList){
-        FavDrinkAdapter favDrinkAdapter = new FavDrinkAdapter(this, arrayList);
+        FavDrinkAdapter2 favDrinkAdapter = new FavDrinkAdapter2(this, arrayList);
         favDrinksListView.setAdapter(favDrinkAdapter);
     }
     private class getFavDrinks extends AsyncTask<String, Void, String> {

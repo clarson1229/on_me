@@ -63,5 +63,6 @@
     <string name="cancel">Cancel</string>
     <string name="are_you_sure_you_want_to_delete">Are You Sure you want to</string>
     <string name="delete_this">delete this.</string>
+    <string name="select_an_offer_to_redeem">Select An Offer To Redeem</string>
 
 </resources>
