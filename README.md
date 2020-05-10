@@ -57,3 +57,4 @@ Errors that might occur:
 
 If it says GPRC failed in the concole restart the emulator by powering off and on. The issue stems from the google maps API translating an address to a latlong.  There were no ways to fix without powering emulator on and off. 
 
+Info: Project will database will not work after May31st until I resetup my Database at my new house. 
