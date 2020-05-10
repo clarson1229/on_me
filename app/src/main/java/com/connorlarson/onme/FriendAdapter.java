@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
+import com.connorlarson.onme.ui.friends.DisplayFriendProfile;
+
 import java.util.ArrayList;
 
 public class FriendAdapter extends BaseAdapter {
@@ -57,7 +59,6 @@ public class FriendAdapter extends BaseAdapter {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo popup modal here
                 Intent i = new Intent(parent.getContext(), deleteFriendModal.class);
                 i.putExtra("FRIEND_1", currentItem);
                 i.putExtra("FRIEND_2", userId);
@@ -67,6 +68,17 @@ public class FriendAdapter extends BaseAdapter {
         });
         TextView name = convertView.findViewById(R.id.friendTextView);
         name.setText(currentItem);
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(parent.getContext(), DisplayFriendProfile.class);
+
+                i.putExtra("FRIEND_1", currentItem);
+                i.putExtra("FRIEND_2", userId);
+
+                context.startActivityForResult(i,MODAL_REQUEST_CODE);
+            }
+        });
 
         return convertView;
     }

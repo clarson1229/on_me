@@ -2,6 +2,7 @@ package com.connorlarson.onme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RedeemModal extends AppCompatActivity {
+public class RedeemModal extends Activity {
     private String userId,transactionId,sender,restaurantName, transactionAmount, message;
     private static final String TAG = "RedeemModal";
     private Button redeemButton;

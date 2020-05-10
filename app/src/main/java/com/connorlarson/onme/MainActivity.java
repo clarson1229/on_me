@@ -1,5 +1,7 @@
 package com.connorlarson.onme;
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import android.os.AsyncTask;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<User> getUserArrayList() {
         return userArrayList;
     }
-
+    SharedPreferences sp;
 
 //    private SharedViewModel sharedViewModel;
     private String userId;
@@ -96,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void logout(MenuItem item) {
+        Toast.makeText(getApplicationContext(),"Logout Success",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginPage.class);
+        sp = getSharedPreferences("logged",MODE_PRIVATE);
+        sp.edit().putBoolean("logged",false).apply();
+        startActivity(intent);
+        finish();
+    }
+
     private class getRestaurantPoints extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {

@@ -32,8 +32,10 @@ public class LoginPage extends AppCompatActivity {
     private static final int MODAL_REQUEST_CODE = 0;
     SharedPreferences sp;
     private void goToMainActivity(){
-        Intent i = new Intent(getBaseContext(), SignUp.class);
-        startActivityForResult(i,MODAL_REQUEST_CODE);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("USER_NAME", sp.getString("USERNAME"," "));
+
+        startActivity(intent);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class LoginPage extends AppCompatActivity {
         username = (EditText)findViewById(R.id.username_text);
         password = (EditText)findViewById(R.id.password_text);
         results = (TextView)findViewById(R.id.Results_text);
-        sp = getSharedPreferences("login",MODE_PRIVATE);
+        sp = getSharedPreferences("logged",MODE_PRIVATE);
 
         if(sp.getBoolean("logged",false)){
             goToMainActivity();
@@ -51,8 +53,9 @@ public class LoginPage extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToMainActivity();
-                sp.edit().putBoolean("logged",true).apply();
+                Intent i = new Intent(getBaseContext(), SignUp.class);
+                startActivityForResult(i,MODAL_REQUEST_CODE);
+
             }
         });
     }
@@ -80,6 +83,8 @@ public class LoginPage extends AppCompatActivity {
                 intent.putExtra("USER_NAME", userName);
 
                 startActivity(intent);
+                sp.edit().putBoolean("logged",true).apply();
+                sp.edit().putString("USERNAME",userName).apply();
                 finish();
 
             }else{
