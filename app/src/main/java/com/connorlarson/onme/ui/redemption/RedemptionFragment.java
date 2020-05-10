@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.connorlarson.onme.MainActivity;
 import com.connorlarson.onme.R;
 import com.connorlarson.onme.RedeemModal;
-import com.connorlarson.onme.RestaurantRecyclerAdapter;
 import com.connorlarson.onme.Transaction;
 
 import org.json.JSONArray;
@@ -145,7 +144,7 @@ public class RedemptionFragment extends Fragment {
                     Log.d(TAG, "onPostExecute: TransId ="+ tempTransId +"  ResId="+tempResId+" ResName ="+
                             tempResName+" sender ="+tempSender+"transAmount  ="+ tempTransAmount+
                             " TransMessage ="+tempMessage+"  Date="+tempDate+" Receiver ="+tempReceiver+" Redeemed ="+tempRedeemed);
-                    if (Integer.parseInt(tempRedeemed) == 0){
+                    if (Integer.parseInt(tempRedeemed) == 0 && tempReceiver.equals(userId)){
                         Transaction transaction = new Transaction(tempTransId,tempResId,tempResName,tempSender,tempReceiver,tempTransAmount,tempMessage,tempDate, Integer.parseInt(tempRedeemed));
                         transactionArray.add(transaction);
                     }
