@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/pop_gradient"
+    >
+
+
+    <TextView
+        android:id="@+id/text_profile_name_first"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_profile_name_last"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/text_profile_name_first"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_favorite_bars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/favorite_bars"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/text_profile_name_last"
+
+        />
+    <LinearLayout
+        android:id="@+id/barListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_favorite_bars">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bar"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:text="Address"
+            android:textColor="#ffffff"
+            android:textSize="18sp">
+
+        </TextView>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/bars_listView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/barListTitle"
+        >
+    </ListView>
+    <TextView
+        android:id="@+id/text_favorite_drinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_drinks"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_below="@+id/bars_listView"
+        />
+    <LinearLayout
+        android:id="@+id/drinksListViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_favorite_drinks">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drink"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:text="Description"
+            android:textColor="#ffffff"
+            android:textSize="18sp">
+
+        </TextView>
+    </LinearLayout>
+
+
+
+    <ListView
+        android:id="@+id/drinks_listView"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_below="@+id/drinksListViewTitle"
+        >
+
+    </ListView>
+
+
+
+
+
+
+    </RelativeLayout>

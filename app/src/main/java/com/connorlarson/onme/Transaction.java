@@ -1,5 +1,7 @@
 package com.connorlarson.onme;
 
+import androidx.annotation.NonNull;
+
 public class Transaction {
     private String transactionId;
     private String restaurantId;
@@ -9,8 +11,9 @@ public class Transaction {
     private String tAmount;
     private String tMessage;
     private String tDate;
+    private int redeemed;
 
-    public Transaction(String transactionId, String restaurantId, String restaurantName, String tSender, String tReceiver, String tAmount, String tMessage, String tDate) {
+    public Transaction(String transactionId, String restaurantId, String restaurantName, String tSender, String tReceiver, String tAmount, String tMessage, String tDate, int redeemed) {
         this.transactionId = transactionId;
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
@@ -19,6 +22,7 @@ public class Transaction {
         this.tAmount = tAmount;
         this.tMessage = tMessage;
         this.tDate = tDate;
+        this.redeemed = redeemed;
     }
 
     public String getTransactionId() {
@@ -83,6 +87,21 @@ public class Transaction {
 
     public void settDate(String tDate) {
         this.tDate = tDate;
+    }
+
+    public int getRedeemed() {
+        return redeemed;
+    }
+
+    public void setRedeemed(int redeemed) {
+        this.redeemed = redeemed;
+    }
+    @NonNull
+    @Override
+    public String toString() {
+        return "Transaction [transactionId=" + transactionId + ", restaurantId=" + restaurantId
+                + "restaurantName=" + restaurantName + "tSender=" + tSender + "tReceiver=" + tReceiver +
+                "tAmount=" + tAmount + "tMessage=" + tMessage + "tDate=" + tDate + "redeemed=" + redeemed +"]";
     }
 }
 

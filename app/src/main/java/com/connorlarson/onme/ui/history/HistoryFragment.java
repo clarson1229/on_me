@@ -144,11 +144,13 @@ public class HistoryFragment extends Fragment {
                     String tempMessage = obj.getString("Message");
                     String tempDate = obj.getString("Date");
                     String tempReceiver = obj.getString("Receiver");
+                    String tempRedeemed = obj.getString("Redeemed");
+
 
                     Log.d(TAG, "onPostExecute: TransId ="+ tempTransId +"  ResId="+tempResId+" ResName ="+
                             tempResName+" sender ="+tempSender+"transAmount  ="+ tempTransAmount+
-                            " TransMessage ="+tempMessage+"  Date="+tempDate+" Receiver ="+tempReceiver);
-                    Transaction transaction = new Transaction(tempTransId,tempResId,tempResName,tempSender,tempReceiver,tempTransAmount,tempMessage,tempDate);
+                            " TransMessage ="+tempMessage+"  Date="+tempDate+" Receiver ="+tempReceiver+" Redeemed ="+tempRedeemed);
+                    Transaction transaction = new Transaction(tempTransId,tempResId,tempResName,tempSender,tempReceiver,tempTransAmount,tempMessage,tempDate, Integer.parseInt(tempRedeemed));
                     transactionArray.add(transaction);
                 }
 

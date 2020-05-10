@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,9 +171,8 @@ public class SendDrinkPage extends AppCompatActivity {
                 }
                 // setting the list view with the data
                 Log.d(TAG, "onPostExecute: setting adapter");
-                FriendAdapter favBarAdapter = new FriendAdapter(getBaseContext(), friendsArray);
-                friendsSendListView.setAdapter(favBarAdapter);
-
+                FriendAdapterSend favBarAdapterSend = new FriendAdapterSend(getBaseContext(), friendsArray);
+                friendsSendListView.setAdapter(favBarAdapterSend);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -245,6 +246,12 @@ public class SendDrinkPage extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result){
             Log.d(TAG, "onPostExecute: Result = "+ result);
+            if (result.equals("Success.")){
+                Toast.makeText(getApplicationContext(),"Drink Successfully Sent",Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(getApplicationContext(),"Failure",Toast.LENGTH_SHORT).show();
+            }
             // ends the activity
             finish();
         }

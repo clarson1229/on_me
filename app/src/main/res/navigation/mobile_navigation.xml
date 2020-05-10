@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_redemption"
+        android:name="com.connorlarson.onme.ui.redemption.RedemptionFragment"
+        android:label="@string/redemption"
+        tools:layout="@layout/fragment_redemption" />
+
+    <fragment
         android:id="@+id/nav_friends"
         android:name="com.connorlarson.onme.ui.friends.FriendsFragment"
         android:label="@string/menu_friends"

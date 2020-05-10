@@ -73,24 +73,7 @@ public class ProfileFragment extends Fragment {
         activity = (MainActivity) getActivity();
         userId = activity.getUserID();
         updateUserInfo();
-//        ProfileViewModal.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textProfile.setText(s);
-//            }
-//        });
-//        ProfileViewModal.getProfileName().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                profileName.setText(s);
-//            }
-//        });
-//        ProfileViewModal.getProfileEmail().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                profileEmail.setText(s);
-//            }
-//        });
+
         updateScrollViews();
         updateProfileButton = mView.findViewById(R.id.edit_profile_button);
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +196,10 @@ public class ProfileFragment extends Fragment {
 
         }
     }
+    private void setBarAdapter(ArrayList<FavBar> arrayList){
+        FavBarAdapter2 favBarAdapter = new FavBarAdapter2(this, arrayList);
+        favBarsListView.setAdapter(favBarAdapter);
+    }
     private class getFavBars extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -292,14 +279,17 @@ public class ProfileFragment extends Fragment {
                 }
 
                 Log.d(TAG, "onPostExecute: setting adapter");
-                FavBarAdapter favBarAdapter = new FavBarAdapter(activity, favBarArray);
-                favBarsListView.setAdapter(favBarAdapter);
+                setBarAdapter(favBarArray);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
+    }
+    private void setDrinkAdapter(ArrayList<FavDrink> arrayList){
+        FavDrinkAdapter2 favDrinkAdapter = new FavDrinkAdapter2(this, arrayList);
+        favDrinksListView.setAdapter(favDrinkAdapter);
     }
     private class getFavDrinks extends AsyncTask<String, Void, String> {
         @Override
@@ -378,8 +368,8 @@ public class ProfileFragment extends Fragment {
                     favDrinkArray.add(favDrink);
                 }
                 Log.d(TAG, "onPostExecute: setting adapter");
-                FavDrinkAdapter favDrinkAdapter = new FavDrinkAdapter(activity, favDrinkArray);
-                favDrinksListView.setAdapter(favDrinkAdapter);
+                setDrinkAdapter(favDrinkArray);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

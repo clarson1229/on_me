@@ -59,5 +59,17 @@
     <string name="first_name">First Name</string>
     <string name="email_address">Email Address</string>
     <string name="sign_up">Sign Up</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_you_want_to_delete">Are You Sure you want to</string>
+    <string name="delete_this">delete this.</string>
+    <string name="select_an_offer_to_redeem">Select An Offer To Redeem</string>
+    <string name="redemption">Redemption</string>
+    <string name="dollarsign">$</string>
+    <string name="attached_message">Attached Message:</string>
+    <string name="show_bartender_to_redeem">Show Bartender to Redeem</string>
+    <string name="redeem_drink">Redeem Drink</string>
+    <string name="would_like_you_to_join_them_for_a_drink">Would Like you to Join them for a Drink</string>
+    <string name="logout">LogOut</string>
 
 </resources>

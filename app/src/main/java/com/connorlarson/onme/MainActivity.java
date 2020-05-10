@@ -1,5 +1,7 @@
 package com.connorlarson.onme;
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import android.os.AsyncTask;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<User> getUserArrayList() {
         return userArrayList;
     }
-
+    SharedPreferences sp;
 
 //    private SharedViewModel sharedViewModel;
     private String userId;
-    private Pair<Double, Double> latLong = Pair.create(39.028015127394035,-94.5739747663232);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_friends, R.id.nav_favorites,
+                R.id.nav_home, R.id.nav_redemption, R.id.nav_friends, R.id.nav_favorites,
                 R.id.nav_credits, R.id.nav_history, R.id.nav_profile)
                 .setDrawerLayout(drawer)
                 .build();
@@ -81,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // Gives fragments access to the data.
     public String getUserID(){ return userId; }
-    public Double getLat(){ return latLong.first; }
-    public Double getLong(){ return latLong.second; }
+
 
 
     @Override
@@ -98,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void logout(MenuItem item) {
+        Toast.makeText(getApplicationContext(),"Logout Success",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginPage.class);
+        sp = getSharedPreferences("logged",MODE_PRIVATE);
+        sp.edit().putBoolean("logged",false).apply();
+        startActivity(intent);
+        finish();
+    }
+
     private class getRestaurantPoints extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -174,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
                 String tempPhone = obj.getString("RestaurantPhone");
                 String tempHours = obj.getString("RestaurantHours");
                 Log.d(TAG, "processResults: id="+ tempId +" name=" + tempName + " address=" + tempAddress +" Phone=" +tempPhone + " hours=" + tempHours);
-//                LatLng tempLatLong = getLocationFromAddress(getApplicationContext(), tempAddress);
 
                 Restaurant restaurant = new Restaurant(tempName,tempAddress, tempId,tempPhone,tempHours,null);
                 restaurantMap.put(tempId,restaurant);

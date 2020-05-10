@@ -1,47 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <!--Todo fix constraints maybe do linear or something -->
-
-    <Button
-        android:id="@+id/add_5_button"
-        android:layout_width="259dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="56dp"
-        android:text="@string/add_5"
-        app:layout_constraintBottom_toTopOf="@+id/add_20_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_balance_text"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/add_10_button"
-        android:layout_width="259dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/add_10"
-        app:layout_constraintBottom_toTopOf="@+id/add_20_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_5_button"
-        app:layout_constraintVertical_bias="0.166" />
-
-    <Button
-        android:id="@+id/add_20_button"
-        android:layout_width="259dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="232dp"
-        android:text="@string/add_20"
-        app:layout_constraintBottom_toTopOf="@+id/text_credits"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/text_account_balance"
         android:layout_width="match_parent"
@@ -49,13 +13,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
         android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        />
 
     <TextView
         android:id="@+id/account_balance_text"
@@ -63,37 +23,58 @@
         android:layout_height="wrap_content"
         android:text="@string/account_balance"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/add_20_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_account_balance"
-        app:layout_constraintVertical_bias="0.105" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_account_balance"
+        android:layout_marginTop="5dp"
+        />
 
-    <TextView
-        android:id="@+id/text_credits"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/add_5_button"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/add_5"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/account_balance_text"
+         />
+
+    <Button
+        android:id="@+id/add_10_button"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/add_10"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/add_5_button"
+        />
+
+    <Button
+        android:id="@+id/add_20_button"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/add_20"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/add_10_button"
+        />
 
     <Switch
         android:id="@+id/auto_add_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/auto_add_funds"
-        app:layout_constraintBottom_toTopOf="@+id/text_credits"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_20_button"
-        app:layout_constraintVertical_bias="0.424" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/add_20_button"
+         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/text_credits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:layout_below="@+id/auto_add_switch"
+        />
+</RelativeLayout>
